@@ -1,0 +1,17 @@
+.header {
+    width: 100vw;
+    min-height: 7vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(rgba(95, 95, 95, 0.623), white);
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav div {
+font-weight: 500;
+}
