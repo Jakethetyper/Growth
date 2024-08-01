@@ -1,17 +1,11 @@
-.header {
-    width: 100vw;
-    min-height: 7vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: linear-gradient(rgba(95, 95, 95, 0.623), white);
-}
-
-nav {
-    display: flex;
-    gap: 30px;
-}
-
-nav div {
-font-weight: 500;
-}
+/* Header.css */
+.header nav a {
+    color: blue;
+    text-decoration: underline;
+    margin: 0 10px;
+  }
+  
+  .header nav a:hover {
+    color: darkblue;
+  }
+  
