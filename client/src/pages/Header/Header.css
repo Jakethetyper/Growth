@@ -1,11 +1,24 @@
 /* Header.css */
+.header {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 0;
+}
+
+.header nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .header nav a {
-    color: blue;
-    text-decoration: underline;
-    margin: 0 10px;
-  }
-  
-  .header nav a:hover {
-    color: darkblue;
-  }
-  
+  color: white;
+  margin: 0 15px;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.header nav a:hover {
+  background-color: #0056b3;
+}
