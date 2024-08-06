@@ -1,40 +1,91 @@
-/* Header.css */
-
 @import "../../assets/colors/colors.css";
 
 .header {
-  position: absolute;
-  opacity: .8;
-  top: 0px;
-  left: 0px;
-  color: (--text-color);
-  width: fit-content;
-  padding: 10px 5px;
+  background-color: var(--primary-color, #007BFF);
+  opacity: 0.9;
+  width: 100%;
+  color: var(--text-color, #ffffff);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  z-index: 1000;
 }
 
 .header nav {
   display: flex;
-  flex-direction: column;
-}
-
-.header nav .navselect {
-  padding: 3px;
-  border-radius: 3px;
-}
-
-.header nav .navselect:hover {
-  background-color: #5c6b7a;
-  cursor: pointer;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 6px 200px;
+  flex-wrap: wrap;
 }
 
 .header nav a {
-  display: flex;
-  margin: 0 15px;
-  padding: 8px 0px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-color, #ffffff);
+  margin: 0 10px;
+  padding: 10px 15px;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
 }
 
 .header nav a:hover {
-  background-color: #0056b3;
+  background-color: var(--secondary-color, #0056b3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header nav a.active {
+  background-color: var(--highlight-color, #ff6600);
+  color: #ffffff;
+}
+
+.hamburger-menu {
+  display: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  .header nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header nav a {
+    margin: 5px 0;
+  }
+
+  .hamburger-menu {
+    display: inline-block;
+  }
+
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+}
+
+.navselect:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  background: linear-gradient(45deg, #5c6b7a, #7a8c98);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.logo span {
+  color: var(--highlight-color, #ff6600);
 }
