@@ -22,7 +22,7 @@ const Header = () => {
         <nav>
           <FaAlignLeft
             onClick={() => setDropDown(!dropdown)}
-            className="icon"
+            className="navselect"
           />
           <Link to="/">
             <FaHome className="icon" /> Home

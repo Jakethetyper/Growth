@@ -1,20 +1,36 @@
 /* Header.css */
+
+@import "../../assets/colors/colors.css";
+
 .header {
-  background-color: #007BFF;
-  color: white;
-  padding: 10px 0;
+  position: absolute;
+  opacity: .8;
+  top: 0px;
+  left: 0px;
+  color: (--text-color);
+  width: fit-content;
+  padding: 10px 5px;
 }
 
 .header nav {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+}
+
+.header nav .navselect {
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.header nav .navselect:hover {
+  background-color: #5c6b7a;
+  cursor: pointer;
 }
 
 .header nav a {
-  color: white;
+  display: flex;
   margin: 0 15px;
-  padding: 8px 16px;
+  padding: 8px 0px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
