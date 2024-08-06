@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FaBook, FaHome, FaUser, FaWallet } from "react-icons/fa";
+import { FaAlignLeft, FaBook, FaHome, FaUser, FaWallet } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
+  const [dropdown, setDropDown] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
@@ -17,27 +18,39 @@ const Header = () => {
 
   return (
     <header className="header">
-      <nav>
-        <Link to="/">
-          <FaHome className="icon" /> Home
-        </Link>
-        <Link to="/library">
-          <FaBook className="icon" /> Library
-        </Link>
-        <Link to="/profile">
-          <FaUser className="icon" /> Profile
-        </Link>
-        <Link to="/balances">
-          <FaWallet className="icon" /> Balances
-        </Link>
-        <div className="toggle-container">
-          <span>{theme === "light" ? "Light Mode" : "Dark Mode"}</span>
-          <label className="toggle">
-            <input type="checkbox" onChange={toggleTheme} checked={theme === "dark"} />
-            <span className="slider"></span>
-          </label>
-        </div>
-      </nav>
+      {dropdown ? (
+        <nav>
+          <FaAlignLeft
+            onClick={() => setDropDown(!dropdown)}
+            className="icon"
+          />
+          <Link to="/">
+            <FaHome className="icon" /> Home
+          </Link>
+          <Link to="/library">
+            <FaBook className="icon" /> Library
+          </Link>
+          <Link to="/profile">
+            <FaUser className="icon" /> Profile
+          </Link>
+          <Link to="/balances">
+            <FaWallet className="icon" /> Balances
+          </Link>
+          <div className="toggle-container">
+            <span>{theme === "light" ? "Light Mode" : "Dark Mode"}</span>
+            <label className="toggle">
+              <input
+                type="checkbox"
+                onChange={toggleTheme}
+                checked={theme === "dark"}
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+        </nav>
+      ) : (
+        <FaAlignLeft onClick={() => setDropDown(!dropdown)} className="icon" />
+      )}
     </header>
   );
 };

@@ -4,6 +4,7 @@
   --background-color: #f9fafb;
   --text-color: #333;
   --primary-color: #007BFF;
+  --icon-color: black;
   --secondary-color: #f4f4f9;
   --card-background-color: #fff;
 }
@@ -14,6 +15,7 @@
   --primary-color: #4ecca3;
   --secondary-color: #16213e;
   --card-background-color: #16213e;
+  --icon-color: #4ecca3;
 }
 
 body {
@@ -67,7 +69,7 @@ li {
 .icon {
   margin-right: 15px;
   font-size: 24px;
-  color: var(--primary-color);
+  color: var(--icon-color);
 }
 
 .button {
