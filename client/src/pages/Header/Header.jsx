@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
-  const [dropdown, setDropDown] = useState(true);
+  const [dropdown, setDropDown] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
@@ -16,24 +16,30 @@ const Header = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
+  const toggleDropdown = () => {
+    setDropDown((prevDropdown) => !prevDropdown);
+  };
+
   return (
     <header className="header">
-      {dropdown ? (
-        <nav>
-          <FaAlignLeft
-            onClick={() => setDropDown(!dropdown)}
-            className="navselect"
-          />
-          <Link to="/">
+      <nav className={`nav-container ${dropdown ? "open" : ""}`}>
+        <div className="logo">
+          <span>My</span>Website
+        </div>
+        <div className="hamburger-menu" onClick={toggleDropdown}>
+          <FaAlignLeft className="icon" />
+        </div>
+        <div className={`nav-links ${dropdown ? "show" : ""}`}>
+          <Link to="/" className="navselect">
             <FaHome className="icon" /> Home
           </Link>
-          <Link to="/library">
+          <Link to="/library" className="navselect">
             <FaBook className="icon" /> Library
           </Link>
-          <Link to="/profile">
+          <Link to="/profile" className="navselect">
             <FaUser className="icon" /> Profile
           </Link>
-          <Link to="/balances">
+          <Link to="/balances" className="navselect">
             <FaWallet className="icon" /> Balances
           </Link>
           <div className="toggle-container">
@@ -47,10 +53,8 @@ const Header = () => {
               <span className="slider"></span>
             </label>
           </div>
-        </nav>
-      ) : (
-        <FaAlignLeft onClick={() => setDropDown(!dropdown)} className="icon" />
-      )}
+        </div>
+      </nav>
     </header>
   );
 };
