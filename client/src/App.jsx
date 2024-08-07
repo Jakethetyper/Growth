@@ -1,4 +1,3 @@
-// App.jsx
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
@@ -17,10 +16,7 @@ function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/library" element={<Library />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/balances" element={<Balances />} />
-          <Route path="/account-balances" element={<div>Account Balances</div>} />
-          <Route path="/expenses" element={<div>Expenses</div>} />
-          <Route path="/incomes" element={<div>Incomes</div>} />
+          <Route path="/balances/*" element={<Balances />} />
         </Routes>
       </div>
     </div>

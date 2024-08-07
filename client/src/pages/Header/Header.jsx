@@ -1,7 +1,9 @@
+// src/components/Header/Header.jsx
+
 import React, { useEffect, useState } from "react";
 import { FaAlignLeft, FaBook, FaHome, FaUser, FaWallet } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import "./Header.css";
+import "./Header.css"; // Ensure this file exists
 
 const Header = () => {
   const [dropdown, setDropDown] = useState(false);
