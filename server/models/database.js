@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  "mongodb+srv://jacobjennings7991:Jakejennings@cluster0.nhrmzof.mongodb.net/",
+  "mongodb+srv://NateWilli:People10@cluster0.qp5vr.mongodb.net/",
   {}
 );
 
