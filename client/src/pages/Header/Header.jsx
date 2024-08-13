@@ -1,11 +1,12 @@
 // src/components/Header/Header.jsx
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useNavigate } from "react";
 import { FaAlignLeft, FaBook, FaHome, FaUser, FaWallet } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./Header.css"; // Ensure this file exists
 
 const Header = () => {
+  const navigate = useNavigate();
   const [dropdown, setDropDown] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
@@ -20,6 +21,11 @@ const Header = () => {
 
   const toggleDropdown = () => {
     setDropDown((prevDropdown) => !prevDropdown);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
@@ -54,6 +60,9 @@ const Header = () => {
               />
               <span className="slider"></span>
             </label>
+          </div>
+          <div className="logoutButton" onClick={() => handleLogout()}>
+            Logout
           </div>
         </div>
       </nav>
