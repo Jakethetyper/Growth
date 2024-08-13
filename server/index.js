@@ -3,11 +3,14 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const protectedRoutes = require('./routes/protected');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 
 // Connect to MongoDB
-connectDB();
+connectDB()
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch((err) => console.error('MongoDB connection error:', err));
 
 // Middleware to parse JSON
 app.use(express.json());
