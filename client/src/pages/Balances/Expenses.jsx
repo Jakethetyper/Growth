@@ -1,11 +1,9 @@
-// src/pages/Balances/Expenses.jsx
-
 import React, { useEffect, useState } from "react";
 import "./Expenses.css";
 
 const Expenses = () => {
   // State for a new expense
-  const [expense, setExpense] = useState({ name: "", amount: "", category: "" });
+  const [expense, setExpense] = useState({ name: "", amount: "" });
 
   // State for the list of expenses
   const [expensesList, setExpensesList] = useState([]);
@@ -23,6 +21,9 @@ const Expenses = () => {
     "Utilities",
     "Entertainment",
     "Transportation",
+    "Shopping",
+    "Health & Wellness",
+    "Bills & Services",
   ];
 
   // Load expenses and custom categories from Local Storage when the component mounts
@@ -54,38 +55,106 @@ const Expenses = () => {
     setExpense({ ...expense, [name]: value });
   };
 
+  // Automatically categorize expenses based on keywords in the name
+  const categorizeExpense = (name) => {
+    const lowerName = name.toLowerCase();
+
+    // Dining Out (including Fast Food chains)
+    const diningOutKeywords = [
+      "restaurant", "dine", "food", "cafe", "coffee", "pizza", "burger", 
+      "sushi", "deli", "takeout", "fast food", "chinese", "italian", 
+      "mexican", "indian", "thai", "bbq", "steakhouse", "pub", "bakery",
+      "mcdonalds", "mcdonald's", "burger king", "wendy's", "taco bell", 
+      "subway", "kfc", "chick-fil-a", "panda express", "arby's", "dunkin'", 
+      "starbucks", "domino's", "pizza hut", "popeyes", "five guys", "chipotle"
+    ];
+    if (diningOutKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Dining Out";
+    }
+
+    // Groceries
+    const groceriesKeywords = [
+      "grocery", "supermarket", "walmart", "costco", "aldi", "trader joe's",
+      "whole foods", "market", "food lion", "safeway", "kroger", "meijer"
+    ];
+    if (groceriesKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Groceries";
+    }
+
+    // Utilities
+    const utilitiesKeywords = [
+      "utility", "electric", "water", "gas", "internet", "phone", "cable", 
+      "power", "energy", "sewage", "garbage", "trash", "heating", "cooling"
+    ];
+    if (utilitiesKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Utilities";
+    }
+
+    // Entertainment
+    const entertainmentKeywords = [
+      "movie", "cinema", "concert", "theater", "games", "music", "streaming", 
+      "netflix", "hulu", "disney+", "prime video", "sports", "amusement", 
+      "park", "festival", "club", "show", "museum", "art", "golf", "bowling"
+    ];
+    if (entertainmentKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Entertainment";
+    }
+
+    // Transportation
+    const transportationKeywords = [
+      "bus", "train", "uber", "lyft", "taxi", "subway", "metro", "fuel", 
+      "gas", "car", "parking", "toll", "transit", "commute", "flight", 
+      "airline", "airfare", "ride"
+    ];
+    if (transportationKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Transportation";
+    }
+
+    // Shopping
+    const shoppingKeywords = [
+      "clothing", "shoes", "apparel", "retail", "fashion", "jewelry", "mall", 
+      "shop", "store", "target", "department", "electronics", "furniture", 
+      "amazon", "ebay", "home goods", "cosmetics", "makeup", "skincare"
+    ];
+    if (shoppingKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Shopping";
+    }
+
+    // Health & Wellness
+    const healthKeywords = [
+      "pharmacy", "doctor", "health", "hospital", "medication", "drug", 
+      "clinic", "dentist", "vision", "optometrist", "eye care", "gym", 
+      "fitness", "exercise", "workout", "yoga", "wellness", "therapy"
+    ];
+    if (healthKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Health & Wellness";
+    }
+
+    // Bills & Services
+    const billsKeywords = [
+      "rent", "mortgage", "loan", "insurance", "subscription", "membership", 
+      "service", "maintenance", "repair", "cleaning", "housekeeping", "security"
+    ];
+    if (billsKeywords.some(keyword => lowerName.includes(keyword))) {
+      return "Bills & Services";
+    }
+
+    // Default to Uncategorized
+    return "Uncategorized";
+  };
+
   // Add a new expense
   const addExpense = (e) => {
     e.preventDefault();
-    const category = expense.category || categorizeExpense(expense.name);
-    const newExpense = { ...expense, category };
+    const category = categorizeExpense(expense.name);
+    const currentDateTime = new Date().toLocaleString(); // Get current date and time
+    const newExpense = { ...expense, category, date: currentDateTime };
 
     // Update the expenses list state
     setExpensesList([...expensesList, newExpense]);
 
     // Clear the input fields
-    setExpense({ name: "", amount: "", category: "" });
-  };
-
-  // Automatically categorize expenses based on keywords in the name
-  const categorizeExpense = (name) => {
-    const lowerName = name.toLowerCase();
-    if (lowerName.includes("grocery") || lowerName.includes("supermarket")) {
-      return "Groceries";
-    }
-    if (lowerName.includes("restaurant") || lowerName.includes("dine")) {
-      return "Dining Out";
-    }
-    if (lowerName.includes("utility") || lowerName.includes("electric")) {
-      return "Utilities";
-    }
-    if (lowerName.includes("movie") || lowerName.includes("concert")) {
-      return "Entertainment";
-    }
-    if (lowerName.includes("bus") || lowerName.includes("train")) {
-      return "Transportation";
-    }
-    return "Uncategorized";
+    setExpense({ name: "", amount: "" });
   };
 
   // Add a custom category
@@ -124,27 +193,6 @@ const Expenses = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label>Category:</label>
-          <select
-            name="category"
-            value={expense.category}
-            onChange={handleInputChange}
-          >
-            <option value="">Select Category</option>
-            {defaultCategories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-            {customCategories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-
         <button type="submit" className="add-expense-button">
           Add Expense
         </button>
@@ -171,7 +219,7 @@ const Expenses = () => {
           {expensesList.map((expense, index) => (
             <li key={index}>
               <strong>{expense.name}</strong>: ${expense.amount} -{" "}
-              <span>{expense.category}</span>
+              <span>{expense.category}</span> - <em>{expense.date}</em>
             </li>
           ))}
         </ul>
