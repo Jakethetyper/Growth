@@ -2,41 +2,59 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [user, setUser] = useState(localStorage.getItem("token"));
   const navigate = useNavigate("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [signIn, setSignIn] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(username, email, password);
-      const res = await fetch("http://localhost:5000/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-        }),
-      });
+      if (signIn) {
+        const res = await fetch("http://localhost:5000/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        });
 
-      // Check if the response is not successful
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Registration failed");
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Incorrect Login");
+        }
+
+        const data = await res.json();
+
+        localStorage.setItem("token", email);
+
+        navigate("/");
+      } else {
+        const res = await fetch("http://localhost:5000/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+          }),
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Registration failed");
+        }
+
+        const data = await res.json();
+
+        localStorage.setItem("token", email);
+
+        navigate("/");
       }
-
-      // Parse the JSON response
-      const data = await res.json();
-
-      // Save token to local storage
-      localStorage.setItem("token", username);
-      navigate("/");
-
-      // Redirect to protected route or dashboard
-      // Example: navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Invalid credentials");
     }
@@ -44,16 +62,18 @@ const Login = () => {
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>{signIn ? "Login" : "Register"}</h2>
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input
-          type="username"
-          placeholder="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+        {signIn ? null : (
+          <input
+            type="username"
+            placeholder="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        )}
         <input
           type="email"
           placeholder="Email"
@@ -68,8 +88,14 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">{signIn ? "Login" : "Register"}</button>
       </form>
+      <button onClick={() => setSignIn(!signIn)}>
+        {signIn
+          ? "No account created? Click Here"
+          : "Already have an account? Click Here"}
+      </button>
+      <div>Check LocalStorage, {user ? user : "no user"}</div>
     </div>
   );
 };

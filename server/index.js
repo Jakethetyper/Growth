@@ -21,13 +21,9 @@ app.use(express.json());
 // CORS Middleware
 app.use(cors({ origin: "http://localhost:5173" }));
 
-// API Routes
 // User Registration
 app.post("/api/register", async (req, res) => {
-  console.log("hi");
   try {
-    console.log("hello");
-    console.log(req.body);
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
@@ -41,6 +37,40 @@ app.post("/api/register", async (req, res) => {
     // Create a new user
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
+
+    res.status(201).json({ message: "User registered successfully!" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(400)
+      .json({ error: "Error registering user", details: error.message });
+  }
+});
+
+app.post("/api/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log(req.body);
+
+    if (!email || !password) {
+      console.log("error");
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const user = await User.findOne({ email });
+    console.log(user);
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ message: "Authentication failed. Wrong password." });
+    }
+
+    const token = jwt.sign({ id: user._id }, "your_jwt_secret", {
+      expiresIn: "1h",
+    });
+    res.json({ token, message: "Login successful!" });
 
     res.status(201).json({ message: "User registered successfully!" });
   } catch (error) {
