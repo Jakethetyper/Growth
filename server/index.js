@@ -11,7 +11,9 @@ const bcrypt = require("bcrypt"); // Import bcrypt for password hashing
 const app = express();
 
 // Connect to MongoDB
-connectDB();
+connectDB()
+  .then(() => console.log("MongoDB connected successfully"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Middleware to parse JSON
 app.use(express.json());

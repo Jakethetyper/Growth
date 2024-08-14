@@ -1,20 +1,29 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const Register = ({ setIsAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post('/api/auth/register', { username, email, password });
       localStorage.setItem('token', res.data.token); // Save token to local storage
-      // Redirect to protected route or dashboard
+      setIsAuthenticated(true);
+      navigate('/'); // Redirect to home after registration
     } catch (err) {
-      setError('User already exists or other error');
+      if (err.response && err.response.status === 409) {
+        setError('User with this email or username already exists'); // Specific error for existing user
+      } else if (err.response && err.response.status === 500) {
+        setError('Server error. Please try again later.'); // Server error
+      } else {
+        setError('Registration failed. Please try again.'); // General error message
+      }
     }
   };
 
