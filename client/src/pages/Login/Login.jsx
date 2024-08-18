@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   const [user, setUser] = useState(localStorage.getItem("token"));
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -29,8 +29,11 @@ const Login = () => {
         }
 
         const data = await res.json();
+        console.log(data.token);
 
-        localStorage.setItem("token", email);
+        localStorage.setItem("token", data.token);
+
+        setIsAuthenticated(true);
 
         navigate("/");
       } else {
