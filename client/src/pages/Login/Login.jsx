@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState(localStorage.getItem("token"));
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -56,6 +56,7 @@ const Login = () => {
         navigate("/");
       }
     } catch (err) {
+      console.log(err);
       setError(err.message || "Invalid credentials");
     }
   };

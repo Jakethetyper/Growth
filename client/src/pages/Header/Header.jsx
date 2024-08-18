@@ -1,9 +1,10 @@
 // src/components/Header/Header.jsx
 
-import React, { useEffect, useState, useNavigate } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaAlignLeft, FaBook, FaHome, FaUser, FaWallet } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import "./Header.css"; // Ensure this file exists
+import "./Header.css";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -61,9 +62,9 @@ const Header = () => {
               <span className="slider"></span>
             </label>
           </div>
-          <div className="logoutButton" onClick={() => handleLogout()}>
+          <button className="logoutButton" onClick={() => handleLogout()}>
             Logout
-          </div>
+          </button>
         </div>
       </nav>
     </header>
