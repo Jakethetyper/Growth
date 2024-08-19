@@ -1,13 +1,9 @@
-// src/components/Header/Header.jsx
-
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaAlignLeft, FaBook, FaHome, FaUser, FaWallet } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./Header.css";
 
-const Header = () => {
-  const navigate = useNavigate();
+const Header = ({ setIsAuthenticated }) => {
   const [dropdown, setDropDown] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
@@ -26,7 +22,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    setIsAuthenticated(false);
   };
 
   return (

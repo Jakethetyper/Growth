@@ -5,6 +5,8 @@
     --icon-color: black;
     --secondary-color: #f4f4f9;
     --card-background-color: #fff;
+    --button-color: white;
+    --border-color: black;
   }
   
   [data-theme="dark"] {
@@ -13,6 +15,8 @@
     --primary-color: #4ecca3;
     --secondary-color: #16213e;
     --card-background-color: #16213e;
-    --icon-color: #4ecca3;
+    --icon-color: #ff8800;
+    --button-color: black;
+    --border-color: #ff8800;
   }
 

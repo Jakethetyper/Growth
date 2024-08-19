@@ -85,6 +85,7 @@
   display: flex;
   align-items: center;
   margin-left: 20px;
+  margin-right: 20px;
 }
 
 .toggle {
@@ -126,11 +127,20 @@
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #f39f21;
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
+}
+
+.logoutButton {
+  background-color: var(--button-color);
+  color: var(--text-color);
+}
+
+.logoutButton:hover{
+  border-color: var(--border-color);
 }
 
 /* Responsive Styles */
