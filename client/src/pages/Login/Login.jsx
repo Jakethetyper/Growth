@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../components/User/UserContext";
 
 const Login = ({ setIsAuthenticated }) => {
   const [user, setUser] = useState(localStorage.getItem("token"));
@@ -30,7 +31,7 @@ const Login = ({ setIsAuthenticated }) => {
 
         const data = await res.json();
 
-        localStorage.setItem("token", data.user);
+        localStorage.setItem("token", email);
 
         setIsAuthenticated(true);
 
@@ -50,8 +51,6 @@ const Login = ({ setIsAuthenticated }) => {
           const errorData = await res.json();
           throw new Error(errorData.error || "Registration failed");
         }
-
-        const data = await res.json();
 
         localStorage.setItem("token", email);
 

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt"); // Ensure you're using 'bcrypt' if that's what you're importing
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },

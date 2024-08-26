@@ -41,11 +41,11 @@ const Header = ({ setIsAuthenticated }) => {
           <Link to="/library" className="navselect">
             <FaBook className="icon" /> Library
           </Link>
-          <Link to="/profile" className="navselect">
-            <FaUser className="icon" /> Profile
-          </Link>
           <Link to="/balances" className="navselect">
             <FaWallet className="icon" /> Balances
+          </Link>
+          <Link to="/profile" className="navselect">
+            <FaUser className="icon" /> Profile
           </Link>
           <div className="toggle-container">
             <span>{theme === "light" ? "Light Mode" : "Dark Mode"}</span>

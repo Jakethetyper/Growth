@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Expenses.css";
 
 const Expenses = () => {
+  const user = localStorage.getItem("token");
   // State for a new expense
   const [expense, setExpense] = useState({ name: "", amount: "" });
 
@@ -33,7 +34,9 @@ const Expenses = () => {
       setExpensesList(storedExpenses);
     }
 
-    const storedCategories = JSON.parse(localStorage.getItem("customCategories"));
+    const storedCategories = JSON.parse(
+      localStorage.getItem("customCategories")
+    );
     if (storedCategories) {
       setCustomCategories(storedCategories);
     }
@@ -61,81 +64,208 @@ const Expenses = () => {
 
     // Dining Out (including Fast Food chains)
     const diningOutKeywords = [
-      "restaurant", "dine", "food", "cafe", "coffee", "pizza", "burger", 
-      "sushi", "deli", "takeout", "fast food", "chinese", "italian", 
-      "mexican", "indian", "thai", "bbq", "steakhouse", "pub", "bakery",
-      "mcdonalds", "mcdonald's", "burger king", "wendy's", "taco bell", 
-      "subway", "kfc", "chick-fil-a", "panda express", "arby's", "dunkin'", 
-      "starbucks", "domino's", "pizza hut", "popeyes", "five guys", "chipotle"
+      "restaurant",
+      "dine",
+      "food",
+      "cafe",
+      "coffee",
+      "pizza",
+      "burger",
+      "sushi",
+      "deli",
+      "takeout",
+      "fast food",
+      "chinese",
+      "italian",
+      "mexican",
+      "indian",
+      "thai",
+      "bbq",
+      "steakhouse",
+      "pub",
+      "bakery",
+      "mcdonalds",
+      "mcdonald's",
+      "burger king",
+      "wendy's",
+      "taco bell",
+      "subway",
+      "kfc",
+      "chick-fil-a",
+      "panda express",
+      "arby's",
+      "dunkin'",
+      "starbucks",
+      "domino's",
+      "pizza hut",
+      "popeyes",
+      "five guys",
+      "chipotle",
     ];
-    if (diningOutKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (diningOutKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Dining Out";
     }
 
     // Groceries
     const groceriesKeywords = [
-      "grocery", "supermarket", "walmart", "costco", "aldi", "trader joe's",
-      "whole foods", "market", "food lion", "safeway", "kroger", "meijer"
+      "grocery",
+      "supermarket",
+      "walmart",
+      "costco",
+      "aldi",
+      "trader joe's",
+      "whole foods",
+      "market",
+      "food lion",
+      "safeway",
+      "kroger",
+      "meijer",
     ];
-    if (groceriesKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (groceriesKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Groceries";
     }
 
     // Utilities
     const utilitiesKeywords = [
-      "utility", "electric", "water", "gas", "internet", "phone", "cable", 
-      "power", "energy", "sewage", "garbage", "trash", "heating", "cooling"
+      "utility",
+      "electric",
+      "water",
+      "gas",
+      "internet",
+      "phone",
+      "cable",
+      "power",
+      "energy",
+      "sewage",
+      "garbage",
+      "trash",
+      "heating",
+      "cooling",
     ];
-    if (utilitiesKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (utilitiesKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Utilities";
     }
 
     // Entertainment
     const entertainmentKeywords = [
-      "movie", "cinema", "concert", "theater", "games", "music", "streaming", 
-      "netflix", "hulu", "disney+", "prime video", "sports", "amusement", 
-      "park", "festival", "club", "show", "museum", "art", "golf", "bowling"
+      "movie",
+      "cinema",
+      "concert",
+      "theater",
+      "games",
+      "music",
+      "streaming",
+      "netflix",
+      "hulu",
+      "disney+",
+      "prime video",
+      "sports",
+      "amusement",
+      "park",
+      "festival",
+      "club",
+      "show",
+      "museum",
+      "art",
+      "golf",
+      "bowling",
     ];
-    if (entertainmentKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (entertainmentKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Entertainment";
     }
 
     // Transportation
     const transportationKeywords = [
-      "bus", "train", "uber", "lyft", "taxi", "subway", "metro", "fuel", 
-      "gas", "car", "parking", "toll", "transit", "commute", "flight", 
-      "airline", "airfare", "ride"
+      "bus",
+      "train",
+      "uber",
+      "lyft",
+      "taxi",
+      "subway",
+      "metro",
+      "fuel",
+      "gas",
+      "car",
+      "parking",
+      "toll",
+      "transit",
+      "commute",
+      "flight",
+      "airline",
+      "airfare",
+      "ride",
     ];
-    if (transportationKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (transportationKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Transportation";
     }
 
     // Shopping
     const shoppingKeywords = [
-      "clothing", "shoes", "apparel", "retail", "fashion", "jewelry", "mall", 
-      "shop", "store", "target", "department", "electronics", "furniture", 
-      "amazon", "ebay", "home goods", "cosmetics", "makeup", "skincare"
+      "clothing",
+      "shoes",
+      "apparel",
+      "retail",
+      "fashion",
+      "jewelry",
+      "mall",
+      "shop",
+      "store",
+      "target",
+      "department",
+      "electronics",
+      "furniture",
+      "amazon",
+      "ebay",
+      "home goods",
+      "cosmetics",
+      "makeup",
+      "skincare",
     ];
-    if (shoppingKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (shoppingKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Shopping";
     }
 
     // Health & Wellness
     const healthKeywords = [
-      "pharmacy", "doctor", "health", "hospital", "medication", "drug", 
-      "clinic", "dentist", "vision", "optometrist", "eye care", "gym", 
-      "fitness", "exercise", "workout", "yoga", "wellness", "therapy"
+      "pharmacy",
+      "doctor",
+      "health",
+      "hospital",
+      "medication",
+      "drug",
+      "clinic",
+      "dentist",
+      "vision",
+      "optometrist",
+      "eye care",
+      "gym",
+      "fitness",
+      "exercise",
+      "workout",
+      "yoga",
+      "wellness",
+      "therapy",
     ];
-    if (healthKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (healthKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Health & Wellness";
     }
 
     // Bills & Services
     const billsKeywords = [
-      "rent", "mortgage", "loan", "insurance", "subscription", "membership", 
-      "service", "maintenance", "repair", "cleaning", "housekeeping", "security"
+      "rent",
+      "mortgage",
+      "loan",
+      "insurance",
+      "subscription",
+      "membership",
+      "service",
+      "maintenance",
+      "repair",
+      "cleaning",
+      "housekeeping",
+      "security",
     ];
-    if (billsKeywords.some(keyword => lowerName.includes(keyword))) {
+    if (billsKeywords.some((keyword) => lowerName.includes(keyword))) {
       return "Bills & Services";
     }
 
@@ -144,11 +274,33 @@ const Expenses = () => {
   };
 
   // Add a new expense
-  const addExpense = (e) => {
+  const addExpense = async (e) => {
     e.preventDefault();
     const category = categorizeExpense(expense.name);
-    const currentDateTime = new Date().toLocaleString(); // Get current date and time
+    const currentDateTime = new Date().toLocaleString();
     const newExpense = { ...expense, category, date: currentDateTime };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/addExpense", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user,
+          name: expense.name,
+          cost: expense.amount,
+          date: currentDateTime,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Incorrect Login");
+      }
+
+      const data = await res.json();
+    } catch (error) {
+      console.log(error);
+    }
 
     // Update the expenses list state
     setExpensesList([...expensesList, newExpense]);

@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
     }
   }, [user]);
 
-  const login = async (organization, password) => {
+  const login = async (email, password) => {
     try {
       console.log("hi");
       const response = await fetch("http://localhost:5000/api/login", {
@@ -19,12 +19,12 @@ export const UserProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ organization, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
       if (data.message != "Incorrect Login") {
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", JSON.stringify(data.user));
         setUser(data.user);
         if (data === undefined) {
           return false;

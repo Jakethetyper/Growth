@@ -3,10 +3,11 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
 const protectedRoutes = require("./routes/protected");
 const path = require("path");
-const User = require("./models/User"); // Assuming User is in the models directory
+const User = require("./models/User");
+const Expense = require("./models/Expense");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const bcrypt = require("bcrypt"); // Import bcrypt for password hashing
+const bcrypt = require("bcrypt");
 
 const app = express();
 
@@ -82,6 +83,36 @@ app.post("/api/login", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error logging in", details: error.message });
+  }
+});
+
+app.post("/api/addExpense", async (req, res) => {
+  try {
+    const { email, name, cost, date } = req.body;
+
+    const expense = { name: name, amount: cost, date: date };
+
+    let newExpense = await Expense.findOne({ email: email });
+
+    if (!newExpense) {
+      newExpense = new Expense({
+        email: email,
+        expenses: [expense],
+      });
+    } else {
+      newExpense.expenses.push(expense);
+    }
+
+    await newExpense.save();
+
+    return res
+      .status(200)
+      .json({ message: "Expense Added Successfully", expense: expense });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Error Adding Expense", details: error.message });
   }
 });
 
