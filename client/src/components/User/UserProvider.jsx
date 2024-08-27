@@ -5,9 +5,8 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    // This ensures that user data is kept in sync with localStorage changes
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", JSON.stringify(user));
     }
   }, [user]);
 
@@ -24,8 +23,8 @@ export const UserProvider = ({ children }) => {
 
       const data = await response.json();
       if (data.message != "Incorrect Login") {
-        localStorage.setItem("token", JSON.stringify(data.user));
-        setUser(data.user);
+        localStorage.setItem("token", JSON.stringify(email));
+        setUser(email);
         if (data === undefined) {
           return false;
         } else {
@@ -40,7 +39,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, login }}>
+    <UserContext.Provider value={{ user, setUser, login }}>
       {children}
     </UserContext.Provider>
   );
