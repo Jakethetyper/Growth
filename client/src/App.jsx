@@ -15,27 +15,62 @@ import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
 
-function AppRoutes({ isAuthenticated, setIsAuthenticated }) {
+function AppRoutes({
+  isAuthenticated,
+  setIsAuthenticated,
+  userEmail,
+  setUserEmail,
+}) {
   return (
     <div>
-      {isAuthenticated && <Header setIsAuthenticated={setIsAuthenticated} />}
+      {isAuthenticated && (
+        <Header
+          setIsAuthenticated={setIsAuthenticated}
+          userEmail={userEmail}
+          setUserEmail={setUserEmail}
+        />
+      )}
       <div className="container">
         <Routes>
           <Route
             path="/"
-            element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+            element={
+              isAuthenticated ? (
+                <Home userEmail={userEmail} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route
             path="/library"
-            element={isAuthenticated ? <Library /> : <Navigate to="/login" />}
+            element={
+              isAuthenticated ? (
+                <Library userEmail={userEmail} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route
             path="/profile"
-            element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+            element={
+              isAuthenticated ? (
+                <Profile userEmail={userEmail} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route
             path="/balances/*"
-            element={isAuthenticated ? <Balances /> : <Navigate to="/login" />}
+            element={
+              isAuthenticated ? (
+                <Balances userEmail={userEmail} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route
             path="/login"
@@ -66,11 +101,13 @@ function AppRoutes({ isAuthenticated, setIsAuthenticated }) {
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState(true);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
         const token = localStorage.getItem("token");
+
         if (token) {
           const res = await axios.get("/api/auth/verify", {
             headers: {
@@ -79,6 +116,7 @@ function App() {
           });
           if (res.status === 200) {
             setIsAuthenticated(true);
+            setUserEmail(token);
           } else {
             setIsAuthenticated(false);
           }
@@ -105,6 +143,8 @@ function App() {
       <AppRoutes
         isAuthenticated={isAuthenticated}
         setIsAuthenticated={setIsAuthenticated}
+        userEmail={userEmail}
+        setUserEmail={setUserEmail}
       />
     </Router>
   );

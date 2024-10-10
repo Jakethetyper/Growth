@@ -1,6 +1,6 @@
 import React from "react";
 import "./Home.css";
-import growthImage from "./growth_home_backgroundimage01.jpg.jpg"; // Import the image
+import growthImage from "./preview.webp"; // Import the image
 
 const Home = () => {
   return (
@@ -9,8 +9,10 @@ const Home = () => {
       <div className="content">
         <div className="description">
           <h1 className="fade-in">Welcome to Our Website</h1>
-          <p>Jake, we need to finish this page. See if you can convince Joe to design a picture... otherwise, we could probably just
-            use AI to create one. I can fill out the description later.</p>
+          <p>
+            At growth, our goal is to get you excited about getting on the path
+            to financial freedom!
+          </p>
           <img src={growthImage} alt="Growth Chart" className="growth-image" />
         </div>
         <div className="info">

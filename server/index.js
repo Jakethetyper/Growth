@@ -77,7 +77,6 @@ app.post("/api/login", async (req, res) => {
         expiresIn: "1h",
       }
     );
-    console.log("success");
 
     res.json({ user, message: "Login successful!" });
   } catch (error) {

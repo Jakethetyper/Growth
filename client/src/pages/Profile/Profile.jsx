@@ -1,7 +1,12 @@
 import React from "react";
+import "./Profile.css";
 
-const Profile = () => {
-  return <h1>Profile Page</h1>;
+const Profile = ({ userEmail }) => {
+  return (
+    <div className="container">
+      <h1>{userEmail}'s Page</h1>
+    </div>
+  );
 };
 
 export default Profile;

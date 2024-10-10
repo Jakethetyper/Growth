@@ -8,11 +8,16 @@ body {
     box-sizing: border-box;
   }
   
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   /* Container and Layout */
   .container {
     display: flex;
-    height: 100vh; /* Ensures the full height of the viewport */
-    flex-direction: column; /* Adjust for better mobile responsiveness */
+    height: 100vh;
+    flex-direction: column;
+  
   }
   
   .side-image {
@@ -31,12 +36,16 @@ body {
   }
   
   .content {
+    margin-top: 61px;
     flex: 1;
-    padding: 20px;
-    overflow-y: auto; /* In case of overflow, it allows scrolling */
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  body ::-webkit-scrollbar {
+    width: 0px;
   }
   
   /* Typography */
@@ -44,21 +53,32 @@ body {
     font-family: 'Montserrat', sans-serif; /* Another example font */
     color: #222;
   }
-  
-  .description, .info {
+
+  .description{
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for readability */
+    background-color: rgba(255, 255, 255, 0.8);
     margin: 20px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .info {
+    margin-top: 20px;
+    width: 100vw;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
   }
   
   /* Image Styling */
   .growth-image {
     width: 100%;
-    max-width: 600px;
     height: auto;
     margin-top: 20px;
-    border: 2px solid #ddd;
+    border: 2px solid #7c7c7c;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
   
