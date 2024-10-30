@@ -87,11 +87,18 @@ app.post("/api/login", async (req, res) => {
 
 app.post("/api/addExpense", async (req, res) => {
   try {
-    const { email, name, cost, date } = req.body;
+    const { email, name, cost, date, occurence } = req.body;
 
-    const expense = { name: name, amount: cost, date: date };
+    const expense = {
+      name: name,
+      amount: cost,
+      date: date,
+      occurence: occurence,
+    };
 
     let newExpense = await Expense.findOne({ email: email });
+
+    console.log(newExpense);
 
     if (!newExpense) {
       newExpense = new Expense({
@@ -112,6 +119,23 @@ app.post("/api/addExpense", async (req, res) => {
     res
       .status(500)
       .json({ error: "Error Adding Expense", details: error.message });
+  }
+});
+
+app.post("/api/getFinancialData", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const financials = await Expense.findOne({ email: email });
+
+    console.log(financials);
+
+    return res.status(200).json({ financials: financials });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "Error Fecthing Financial Information", details: error });
   }
 });
 

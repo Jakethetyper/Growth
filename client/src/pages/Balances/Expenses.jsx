@@ -3,6 +3,7 @@ import "./Expenses.css";
 
 const Expenses = () => {
   const user = localStorage.getItem("token");
+  const [howOften, setHowOften] = useState(365);
   // State for a new expense
   const [expense, setExpense] = useState({ name: "", amount: "" });
 
@@ -14,6 +15,13 @@ const Expenses = () => {
 
   // State for a new category input
   const [newCategory, setNewCategory] = useState("");
+
+  const howOftenOptions = [
+    { name: "Daily", value: 365 },
+    { name: "Weekly", value: 52 },
+    { name: "Monthly", value: 12 },
+    { name: "One Time Payment", value: 1 },
+  ];
 
   // Default categories
   const defaultCategories = [
@@ -40,19 +48,36 @@ const Expenses = () => {
     if (storedCategories) {
       setCustomCategories(storedCategories);
     }
+
+    getFinancialInfo();
   }, []);
 
-  // Save expenses to Local Storage whenever the expensesList changes
   useEffect(() => {
     localStorage.setItem("expensesList", JSON.stringify(expensesList));
   }, [expensesList]);
 
-  // Save custom categories to Local Storage whenever they change
   useEffect(() => {
     localStorage.setItem("customCategories", JSON.stringify(customCategories));
   }, [customCategories]);
 
-  // Handle input changes
+  const getFinancialInfo = async (req, res) => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/getFinancialData",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user,
+          }),
+        }
+      );
+      console.log(response.data());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setExpense({ ...expense, [name]: value });
@@ -289,6 +314,7 @@ const Expenses = () => {
           name: expense.name,
           cost: expense.amount,
           date: currentDateTime,
+          occurence: howOften,
         }),
       });
 
@@ -318,6 +344,10 @@ const Expenses = () => {
     }
   };
 
+  const handleOftenChange = (event) => {
+    setHowOften(event.target.value);
+  };
+
   return (
     <div className="expenses-container">
       <h1>Expense Categorization</h1>
@@ -343,6 +373,17 @@ const Expenses = () => {
             onChange={handleInputChange}
             required
           />
+        </div>
+
+        <div className="form-group">
+          <label>Type:</label>
+          <select value={howOften} onChange={handleOftenChange}>
+            {howOftenOptions.map((option, index) => (
+              <option value={option.value} key={index}>
+                {option.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <button type="submit" className="add-expense-button">

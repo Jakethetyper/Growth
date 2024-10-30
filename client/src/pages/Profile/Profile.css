@@ -1,3 +1,18 @@
-.container {
-    padding-top: 20px;
+.profileContainer {
+    padding-top: 25px;
+}
+
+.profileStatsBox {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.profileStatsBox div {
+    min-width: 20vw;
+    min-height: 70vh;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 10px;
+    background-color: rgb(179, 178, 178);
 }
