@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Expenses.css";
 
-const Expenses = () => {
+const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
   const user = localStorage.getItem("token");
   const [howOften, setHowOften] = useState(365);
   // State for a new expense
@@ -34,7 +34,7 @@ const Expenses = () => {
     "Health & Wellness",
     "Bills & Services",
   ];
-
+  console.log(userFinancials, "hi");
   // Load expenses and custom categories from Local Storage when the component mounts
   useEffect(() => {
     const storedExpenses = JSON.parse(localStorage.getItem("expensesList"));
@@ -48,8 +48,6 @@ const Expenses = () => {
     if (storedCategories) {
       setCustomCategories(storedCategories);
     }
-
-    getFinancialInfo();
   }, []);
 
   useEffect(() => {
@@ -59,24 +57,6 @@ const Expenses = () => {
   useEffect(() => {
     localStorage.setItem("customCategories", JSON.stringify(customCategories));
   }, [customCategories]);
-
-  const getFinancialInfo = async (req, res) => {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/getFinancialData",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: user,
-          }),
-        }
-      );
-      console.log(response.data());
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

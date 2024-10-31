@@ -20,7 +20,10 @@ function AppRoutes({
   setIsAuthenticated,
   userEmail,
   setUserEmail,
+  userFinancials,
+  setUserFinancials,
 }) {
+  console.log(userFinancials, userEmail);
   return (
     <div>
       {isAuthenticated && (
@@ -56,7 +59,11 @@ function AppRoutes({
             path="/profile"
             element={
               isAuthenticated ? (
-                <Profile userEmail={userEmail} />
+                <Profile
+                  userEmail={userEmail}
+                  userFinancials={userFinancials}
+                  setUserFinancials={setUserFinancials}
+                />
               ) : (
                 <Navigate to="/login" />
               )
@@ -66,7 +73,11 @@ function AppRoutes({
             path="/balances/*"
             element={
               isAuthenticated ? (
-                <Balances userEmail={userEmail} />
+                <Balances
+                  userEmail={userEmail}
+                  userFinancials={userFinancials}
+                  setUserFinancials={setUserFinancials}
+                />
               ) : (
                 <Navigate to="/login" />
               )
@@ -101,7 +112,9 @@ function AppRoutes({
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userEmail, setUserEmail] = useState(true);
+  const [financialsLoading, setFinancialsLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState(null);
+  const [userFinancials, setUserFinancials] = useState(null);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -117,6 +130,25 @@ function App() {
           if (res.status === 200) {
             setIsAuthenticated(true);
             setUserEmail(token);
+
+            // Fetch financial data
+            const response = await fetch(
+              "http://localhost:5000/api/getFinancialData",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  email: token,
+                }),
+              }
+            );
+
+            if (response.ok) {
+              const financialsData = await response.json();
+              setUserFinancials(financialsData.financials);
+            } else {
+              console.error("Failed to fetch financial data");
+            }
           } else {
             setIsAuthenticated(false);
           }
@@ -128,13 +160,14 @@ function App() {
         setIsAuthenticated(false);
       } finally {
         setLoading(false);
+        setFinancialsLoading(false); // Set financials loading to false when done
       }
     };
 
     checkAuthStatus();
   }, []);
 
-  if (loading) {
+  if (loading || financialsLoading) {
     return <div>Loading...</div>;
   }
 
@@ -145,6 +178,8 @@ function App() {
         setIsAuthenticated={setIsAuthenticated}
         userEmail={userEmail}
         setUserEmail={setUserEmail}
+        userFinancials={userFinancials}
+        setUserFinancials={setUserFinancials}
       />
     </Router>
   );

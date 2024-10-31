@@ -128,7 +128,7 @@ app.post("/api/getFinancialData", async (req, res) => {
 
     const financials = await Expense.findOne({ email: email });
 
-    console.log(financials);
+    console.log(financials, "hi");
 
     return res.status(200).json({ financials: financials });
   } catch (error) {
