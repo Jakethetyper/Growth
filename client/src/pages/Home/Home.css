@@ -1,143 +1,203 @@
+:root {
+  --color-primary: #007BFF; /* Primary blue for buttons and links */
+  --color-success: #28a745; /* Green for profits or positive indicators */
+  --color-danger: #dc3545; /* Red for losses or warnings */
+  --color-background: #f8f9fa; /* Light background for content areas */
+  --color-text: #333; /* Main text color */
+  --color-footer: #333; /* Footer background */
+  --color-header: #222; /* Header text color */
+  --color-link-hover: #0056b3; /* Hover state for links/buttons */
+}
+
 /* General Body Styles */
 body {
-    font-family: 'Roboto', sans-serif; /* Example font */
-    line-height: 1.6;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  *, *::before, *::after {
-    box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--color-background); /* Neutral background */
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  body {
+    background-color: lightblue; /* Lighter background for better visibility on small screens */
   }
 
-  /* Container and Layout */
   .container {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-  
-  }
-  
-  .side-image {
-    background-image: url('./growth_home_backgroundimage01.jpg.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 15%; /* Adjust to the desired width of the side images */
-  }
-  
-  .left-side {
-    background-position: left center;
-  }
-  
-  .right-side {
-    background-position: right center;
-  }
-  
-  .content {
-    margin-top: 61px;
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column; /* Stack elements vertically on smaller screens */
   }
 
-  body ::-webkit-scrollbar {
-    width: 0px;
-  }
-  
-  /* Typography */
   h1, h2 {
-    font-family: 'Montserrat', sans-serif; /* Another example font */
-    color: #222;
+    font-size: 1.5rem; /* Smaller font size for headings on small devices */
   }
+}
 
-  .description{
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin: 20px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .info {
-    margin-top: 20px;
-    width: 100vw;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-  }
-  
-  /* Image Styling */
-  .growth-image {
-    width: 100%;
-    height: auto;
-    margin-top: 20px;
-    border: 2px solid #7c7c7c;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* To-Do List Styles */
-  .todo {
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin-top: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-  }
-  
-  .todo h3 {
-    margin-bottom: 10px;
-  }
-  
-  .todo ul {
-    list-style-type: disc;
-    padding-left: 20px;
-  }
-  
-  .todo ul li {
-    margin-bottom: 5px;
-  }
-  
-  /* Footer Styles */
-  .footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    width: 100%;
-  }
-  
-  /* Button Styles */
-  button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Animation Styles */
-  .fade-in {
-    animation: fadeIn 2s ease-in;
-  }
-  
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-  
+/* Image Styling */
+.growth-image {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+  border: 2px solid #7c7c7c;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Container and Layout */
+.container {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.side-image {
+  background-image: url('./growth_home_backgroundimage01.jpg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 15%;
+}
+
+.content {
+  margin-top: 61px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body ::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Typography */
+h1, h2 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--color-header);
+  font-weight: 700;
+}
+
+p {
+  font-weight: 400; /* Regular for paragraphs */
+}
+
+.description, .info, .todo {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--color-text);
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.info p {
+  display: flex;
+  align-items: center;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--color-footer);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+/* Button Styles */
+button {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: var(--color-link-hover);
+  transition: width 0.3s ease;
+  z-index: 0;
+}
+
+button:hover::before {
+  width: 100%;
+}
+
+button span {
+  position: relative;
+  z-index: 1;
+}
+
+button:hover {
+  color: #fff;
+}
+
+/* Animation Styles */
+.fade-in {
+  animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Icon Styling */
+.fa-icon {
+  margin-right: 5px;
+  color: var(--color-primary);
+}
+
+.fa-chart-line {
+  color: var(--color-success);
+}
+
+.fa-wallet {
+  color: var(--color-primary);
+}
+
+.fa-piggy-bank {
+  color: var(--color-danger);
+}
+
+/* Loader Animation */
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

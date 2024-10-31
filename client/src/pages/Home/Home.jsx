@@ -1,6 +1,8 @@
 import React from "react";
 import "./Home.css";
-import growthImage from "./preview.webp"; // Import the image
+import growthImage from "./preview.webp";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWallet, faChartLine, faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
   return (
@@ -10,14 +12,16 @@ const Home = () => {
         <div className="description">
           <h1 className="fade-in">Welcome to Our Website</h1>
           <p>
-            At growth, our goal is to get you excited about getting on the path
+            At Growth, our goal is to get you excited about getting on the path
             to financial freedom!
           </p>
           <img src={growthImage} alt="Growth Chart" className="growth-image" />
         </div>
         <div className="info">
           <h2 className="fade-in">About Us</h2>
-          <p>We rock.</p>
+          <p><FontAwesomeIcon icon={faChartLine}/> We help you track and manage your investments.</p>
+          <p><FontAwesomeIcon icon={faWallet}/> Learn how to manage your budgets efficiently.</p>
+          <p><FontAwesomeIcon icon={faPiggyBank}/> Keep an eye on all your accounts in one place.</p>
         </div>
         <div className="todo">
           <h3>To-Do List:</h3>
