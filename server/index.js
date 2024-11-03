@@ -87,7 +87,7 @@ app.post("/api/login", async (req, res) => {
 
 app.post("/api/addExpense", async (req, res) => {
   try {
-    const { email, name, cost, date, occurence } = req.body;
+    const { email, name, cost, date, occurence, type } = req.body;
 
     const expense = {
       name: name,
@@ -98,15 +98,33 @@ app.post("/api/addExpense", async (req, res) => {
 
     let newExpense = await Expense.findOne({ email: email });
 
-    console.log(newExpense);
-
-    if (!newExpense) {
-      newExpense = new Expense({
-        email: email,
-        expenses: [expense],
-      });
+    if (type === "expense") {
+      if (!newExpense) {
+        newExpense = new Expense({
+          email: email,
+          expenses: [expense],
+        });
+      } else {
+        newExpense.expenses.push(expense);
+      }
+    } else if (type === "income") {
+      if (!newExpense) {
+        newExpense = new Expense({
+          email: email,
+          incomes: [expense],
+        });
+      } else {
+        newExpense.incomes.push(expense);
+      }
     } else {
-      newExpense.expenses.push(expense);
+      if (!newExpense) {
+        newExpense = new Expense({
+          email: email,
+          investments: [expense],
+        });
+      } else {
+        newExpense.investments.push({ name: name, amount: cost, date: date });
+      }
     }
 
     await newExpense.save();
@@ -127,8 +145,6 @@ app.post("/api/getFinancialData", async (req, res) => {
     const { email } = req.body;
 
     const financials = await Expense.findOne({ email: email });
-
-    console.log(financials, "hi");
 
     return res.status(200).json({ financials: financials });
   } catch (error) {

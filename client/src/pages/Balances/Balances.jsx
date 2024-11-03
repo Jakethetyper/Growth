@@ -1,13 +1,13 @@
 // src/pages/Balances/Balances.jsx
 
-import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
-import './Balances.css';
-import Expenses from './Expenses';
-import Incomes from './Incomes'; // Import the Incomes component
-import Investments from './Investments'; // Import the Investments component
+import React from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import "./Balances.css";
+import Expenses from "./Expenses";
+import Incomes from "./Incomes"; // Import the Incomes component
+import Investments from "./Investments"; // Import the Investments component
 
-const Balances = () => {
+const Balances = ({ userEmail, userFinancials, setUserFinancials }) => {
   return (
     <div className="balances-container">
       <h1>Balances</h1>
@@ -25,9 +25,36 @@ const Balances = () => {
       </div>
 
       <Routes>
-        <Route path="expenses" element={<Expenses />} />
-        <Route path="incomes" element={<Incomes />} />
-        <Route path="investments" element={<Investments />} />
+        <Route
+          path="expenses"
+          element={
+            <Expenses
+              userEmail={userEmail}
+              userFinancials={userFinancials}
+              setUserFinancials={setUserFinancials}
+            />
+          }
+        />
+        <Route
+          path="incomes"
+          element={
+            <Incomes
+              userEmail={userEmail}
+              userFinancials={userFinancials}
+              setUserFinancials={setUserFinancials}
+            />
+          }
+        />
+        <Route
+          path="investments"
+          element={
+            <Investments
+              userEmail={userEmail}
+              userFinancials={userFinancials}
+              setUserFinancials={setUserFinancials}
+            />
+          }
+        />
         {/* Add more routes as needed */}
       </Routes>
     </div>

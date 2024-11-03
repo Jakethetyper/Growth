@@ -1,55 +1,48 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Expenses.css";
 
+// Constants for how often options and default categories
+const HOW_OFTEN_OPTIONS = [
+  { name: "Daily", value: 365 },
+  { name: "Weekly", value: 52 },
+  { name: "Monthly", value: 12 },
+  { name: "One Time Payment", value: 1 },
+];
+
+const DEFAULT_CATEGORIES = [
+  "Groceries",
+  "Dining Out",
+  "Utilities",
+  "Entertainment",
+  "Transportation",
+  "Shopping",
+  "Health & Wellness",
+  "Bills & Services",
+];
+
+// Component
 const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
   const user = localStorage.getItem("token");
+
+  // States for expenses, categories, and frequency selection
   const [howOften, setHowOften] = useState(365);
-  // State for a new expense
   const [expense, setExpense] = useState({ name: "", amount: "" });
-
-  // State for the list of expenses
   const [expensesList, setExpensesList] = useState([]);
-
-  // State for custom categories
   const [customCategories, setCustomCategories] = useState([]);
-
-  // State for a new category input
   const [newCategory, setNewCategory] = useState("");
 
-  const howOftenOptions = [
-    { name: "Daily", value: 365 },
-    { name: "Weekly", value: 52 },
-    { name: "Monthly", value: 12 },
-    { name: "One Time Payment", value: 1 },
-  ];
-
-  // Default categories
-  const defaultCategories = [
-    "Groceries",
-    "Dining Out",
-    "Utilities",
-    "Entertainment",
-    "Transportation",
-    "Shopping",
-    "Health & Wellness",
-    "Bills & Services",
-  ];
-  console.log(userFinancials, "hi");
-  // Load expenses and custom categories from Local Storage when the component mounts
+  // Load data from Local Storage on mount
   useEffect(() => {
     const storedExpenses = JSON.parse(localStorage.getItem("expensesList"));
-    if (storedExpenses) {
-      setExpensesList(storedExpenses);
-    }
+    if (storedExpenses) setExpensesList(storedExpenses);
 
     const storedCategories = JSON.parse(
       localStorage.getItem("customCategories")
     );
-    if (storedCategories) {
-      setCustomCategories(storedCategories);
-    }
+    if (storedCategories) setCustomCategories(storedCategories);
   }, []);
 
+  // Update Local Storage when expenses or categories change
   useEffect(() => {
     localStorage.setItem("expensesList", JSON.stringify(expensesList));
   }, [expensesList]);
@@ -58,227 +51,44 @@ const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
     localStorage.setItem("customCategories", JSON.stringify(customCategories));
   }, [customCategories]);
 
+  // Helper functions
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setExpense({ ...expense, [name]: value });
   };
 
-  // Automatically categorize expenses based on keywords in the name
+  // Categorize based on keywords in the name
   const categorizeExpense = (name) => {
     const lowerName = name.toLowerCase();
+    const keywordGroups = {
+      "Dining Out": [
+        "restaurant",
+        "dine",
+        "food",
+        "cafe",
+        "coffee",
+        "pizza",
+        "burger",
+        "sushi",
+      ],
+      Groceries: ["grocery", "supermarket", "walmart", "costco", "market"],
+      Utilities: ["utility", "electric", "water", "internet", "phone"],
+      Entertainment: ["movie", "concert", "theater", "music", "netflix"],
+      Transportation: ["bus", "train", "uber", "lyft", "car", "parking"],
+      Shopping: ["clothing", "shoes", "apparel", "amazon", "home goods"],
+      "Health & Wellness": ["pharmacy", "doctor", "health", "gym", "fitness"],
+      "Bills & Services": ["rent", "mortgage", "insurance", "service"],
+    };
 
-    // Dining Out (including Fast Food chains)
-    const diningOutKeywords = [
-      "restaurant",
-      "dine",
-      "food",
-      "cafe",
-      "coffee",
-      "pizza",
-      "burger",
-      "sushi",
-      "deli",
-      "takeout",
-      "fast food",
-      "chinese",
-      "italian",
-      "mexican",
-      "indian",
-      "thai",
-      "bbq",
-      "steakhouse",
-      "pub",
-      "bakery",
-      "mcdonalds",
-      "mcdonald's",
-      "burger king",
-      "wendy's",
-      "taco bell",
-      "subway",
-      "kfc",
-      "chick-fil-a",
-      "panda express",
-      "arby's",
-      "dunkin'",
-      "starbucks",
-      "domino's",
-      "pizza hut",
-      "popeyes",
-      "five guys",
-      "chipotle",
-    ];
-    if (diningOutKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Dining Out";
+    for (const [category, keywords] of Object.entries(keywordGroups)) {
+      if (keywords.some((keyword) => lowerName.includes(keyword)))
+        return category;
     }
 
-    // Groceries
-    const groceriesKeywords = [
-      "grocery",
-      "supermarket",
-      "walmart",
-      "costco",
-      "aldi",
-      "trader joe's",
-      "whole foods",
-      "market",
-      "food lion",
-      "safeway",
-      "kroger",
-      "meijer",
-    ];
-    if (groceriesKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Groceries";
-    }
-
-    // Utilities
-    const utilitiesKeywords = [
-      "utility",
-      "electric",
-      "water",
-      "gas",
-      "internet",
-      "phone",
-      "cable",
-      "power",
-      "energy",
-      "sewage",
-      "garbage",
-      "trash",
-      "heating",
-      "cooling",
-    ];
-    if (utilitiesKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Utilities";
-    }
-
-    // Entertainment
-    const entertainmentKeywords = [
-      "movie",
-      "cinema",
-      "concert",
-      "theater",
-      "games",
-      "music",
-      "streaming",
-      "netflix",
-      "hulu",
-      "disney+",
-      "prime video",
-      "sports",
-      "amusement",
-      "park",
-      "festival",
-      "club",
-      "show",
-      "museum",
-      "art",
-      "golf",
-      "bowling",
-    ];
-    if (entertainmentKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Entertainment";
-    }
-
-    // Transportation
-    const transportationKeywords = [
-      "bus",
-      "train",
-      "uber",
-      "lyft",
-      "taxi",
-      "subway",
-      "metro",
-      "fuel",
-      "gas",
-      "car",
-      "parking",
-      "toll",
-      "transit",
-      "commute",
-      "flight",
-      "airline",
-      "airfare",
-      "ride",
-    ];
-    if (transportationKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Transportation";
-    }
-
-    // Shopping
-    const shoppingKeywords = [
-      "clothing",
-      "shoes",
-      "apparel",
-      "retail",
-      "fashion",
-      "jewelry",
-      "mall",
-      "shop",
-      "store",
-      "target",
-      "department",
-      "electronics",
-      "furniture",
-      "amazon",
-      "ebay",
-      "home goods",
-      "cosmetics",
-      "makeup",
-      "skincare",
-    ];
-    if (shoppingKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Shopping";
-    }
-
-    // Health & Wellness
-    const healthKeywords = [
-      "pharmacy",
-      "doctor",
-      "health",
-      "hospital",
-      "medication",
-      "drug",
-      "clinic",
-      "dentist",
-      "vision",
-      "optometrist",
-      "eye care",
-      "gym",
-      "fitness",
-      "exercise",
-      "workout",
-      "yoga",
-      "wellness",
-      "therapy",
-    ];
-    if (healthKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Health & Wellness";
-    }
-
-    // Bills & Services
-    const billsKeywords = [
-      "rent",
-      "mortgage",
-      "loan",
-      "insurance",
-      "subscription",
-      "membership",
-      "service",
-      "maintenance",
-      "repair",
-      "cleaning",
-      "housekeeping",
-      "security",
-    ];
-    if (billsKeywords.some((keyword) => lowerName.includes(keyword))) {
-      return "Bills & Services";
-    }
-
-    // Default to Uncategorized
     return "Uncategorized";
   };
 
-  // Add a new expense
+  // Event handlers
   const addExpense = async (e) => {
     e.preventDefault();
     const category = categorizeExpense(expense.name);
@@ -295,32 +105,39 @@ const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
           cost: expense.amount,
           date: currentDateTime,
           occurence: howOften,
+          type: "expense",
         }),
       });
-
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.error || "Incorrect Login");
+        throw new Error(errorData.error || "Request failed");
       }
 
-      const data = await res.json();
+      setUserFinancials((prevFinancials) => ({
+        ...prevFinancials,
+        expenses: [
+          ...prevFinancials.expenses,
+          {
+            name: expense.name,
+            amount: expense.amount,
+            date: currentDateTime,
+            occurence: howOften,
+          },
+        ],
+      }));
     } catch (error) {
       console.log(error);
     }
 
-    // Update the expenses list state
     setExpensesList([...expensesList, newExpense]);
-
-    // Clear the input fields
     setExpense({ name: "", amount: "" });
   };
 
-  // Add a custom category
   const addCustomCategory = (e) => {
     e.preventDefault();
     if (newCategory && !customCategories.includes(newCategory)) {
       setCustomCategories([...customCategories, newCategory]);
-      setNewCategory(""); // Clear the input field
+      setNewCategory("");
     }
   };
 
@@ -328,6 +145,7 @@ const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
     setHowOften(event.target.value);
   };
 
+  // Main JSX
   return (
     <div className="expenses-container">
       <h1>Expense Categorization</h1>
@@ -358,7 +176,7 @@ const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
         <div className="form-group">
           <label>Type:</label>
           <select value={howOften} onChange={handleOftenChange}>
-            {howOftenOptions.map((option, index) => (
+            {HOW_OFTEN_OPTIONS.map((option, index) => (
               <option value={option.value} key={index}>
                 {option.name}
               </option>
@@ -389,7 +207,7 @@ const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
       <div className="expenses-list">
         <h2>Expenses</h2>
         <ul>
-          {expensesList.map((expense, index) => (
+          {userFinancials.expenses.map((expense, index) => (
             <li key={index}>
               <strong>{expense.name}</strong>: ${expense.amount} -{" "}
               <span>{expense.category}</span> - <em>{expense.date}</em>

@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from "react";
 import "./Investments.css";
 
-const Investments = () => {
+const Investments = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [investment, setInvestment] = useState({ name: "", amount: "" });
   const [investmentsList, setInvestmentsList] = useState([]);
 
   useEffect(() => {
-    const storedInvestments = JSON.parse(localStorage.getItem("investmentsList"));
+    const storedInvestments = JSON.parse(
+      localStorage.getItem("investmentsList")
+    );
     if (storedInvestments) {
       setInvestmentsList(storedInvestments);
     }
@@ -23,10 +25,46 @@ const Investments = () => {
     setInvestment({ ...investment, [name]: value });
   };
 
-  const addInvestment = (e) => {
+  const addInvestment = async (e) => {
     e.preventDefault();
-    setInvestmentsList([...investmentsList, investment]);
     setInvestment({ name: "", amount: "" });
+    const currentDateTime = new Date().toLocaleString();
+    try {
+      const response = await fetch("http://localhost:5000/api/addExpense", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: userEmail,
+          name: investment.name,
+          cost: investment.amount,
+          date: currentDateTime,
+          type: "invesment",
+        }),
+      });
+
+      if (!response.ok) {
+        // Parse the error response
+        const errorData = await response.json();
+        console.error("Error:", errorData.error);
+        throw new Error(
+          `HTTP error! Status: ${response.status}, Message: ${errorData.message}`
+        );
+      }
+
+      setUserFinancials((prevFinancials) => ({
+        ...prevFinancials,
+        investments: [
+          ...prevFinancials.investments,
+          {
+            name: income.name,
+            amount: income.amount,
+            date: currentDateTime,
+          },
+        ],
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -64,7 +102,7 @@ const Investments = () => {
       <div className="investments-list">
         <h2>Investments</h2>
         <ul>
-          {investmentsList.map((investment, index) => (
+          {userFinancials.investments.map((investment, index) => (
             <li key={index}>
               <strong>{investment.name}</strong>: ${investment.amount}
             </li>

@@ -14,6 +14,7 @@ import Library from "./pages/Library/Library";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
+import Investments from "./pages/Balances/Investments";
 
 function AppRoutes({
   isAuthenticated,
@@ -23,7 +24,6 @@ function AppRoutes({
   userFinancials,
   setUserFinancials,
 }) {
-  console.log(userFinancials, userEmail);
   return (
     <div>
       {isAuthenticated && (
@@ -111,11 +111,12 @@ function AppRoutes({
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [financialsLoading, setFinancialsLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Loading state for auth check
+  const [financialsLoading, setFinancialsLoading] = useState(true); // Loading state for financial data
   const [userEmail, setUserEmail] = useState(null);
-  const [userFinancials, setUserFinancials] = useState(null);
+  const [userFinancials, setUserFinancials] = useState();
 
+  // Check authentication and fetch financial data
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
@@ -130,25 +131,6 @@ function App() {
           if (res.status === 200) {
             setIsAuthenticated(true);
             setUserEmail(token);
-
-            // Fetch financial data
-            const response = await fetch(
-              "http://localhost:5000/api/getFinancialData",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  email: token,
-                }),
-              }
-            );
-
-            if (response.ok) {
-              const financialsData = await response.json();
-              setUserFinancials(financialsData.financials);
-            } else {
-              console.error("Failed to fetch financial data");
-            }
           } else {
             setIsAuthenticated(false);
           }
@@ -159,14 +141,55 @@ function App() {
         console.error(err);
         setIsAuthenticated(false);
       } finally {
-        setLoading(false);
-        setFinancialsLoading(false); // Set financials loading to false when done
+        setLoading(false); // Stop loading when auth check is complete
       }
     };
 
-    checkAuthStatus();
-  }, []);
+    const fetchFinancialData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/getFinancialData",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userEmail }),
+          }
+        );
 
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const financialsData = await response.json();
+        console.log(financialsData);
+        if (financialsData.financials === null) {
+          setUserFinancials({
+            email: `${userEmail}`,
+            expenses: [],
+            investments: [],
+            incomes: [],
+          });
+        } else {
+          setUserFinancials(financialsData.financials);
+        }
+      } catch (error) {
+        console.error("Error fetching financial data:", error);
+      } finally {
+        setFinancialsLoading(false); // Stop loading after fetching financial data
+      }
+    };
+
+    // First check auth status, then fetch financial data if authenticated
+    checkAuthStatus().then(() => {
+      if (userEmail) {
+        fetchFinancialData();
+      } else {
+        setFinancialsLoading(false); // Skip fetching if not authenticated
+      }
+    });
+  }, [userEmail]);
+
+  // Render loading indicator until both auth and financial data are loaded
   if (loading || financialsLoading) {
     return <div>Loading...</div>;
   }

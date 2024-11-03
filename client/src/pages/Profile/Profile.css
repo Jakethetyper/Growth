@@ -1,3 +1,5 @@
+@import "../../assets/colors/colors.css";
+
 .profileContainer {
     padding-top: 25px;
 }
@@ -9,10 +11,11 @@
     padding: 20px;
 }
 
-.profileStatsBox div {
+.Box {
     min-width: 20vw;
     min-height: 70vh;
-    border: 2px solid rgb(255, 255, 255);
+    border: 2px solid rgb(114, 114, 114);
     border-radius: 10px;
-    background-color: rgb(179, 178, 178);
+    background-color: rgb(--primary-color);
+    color: rgb(238, 238, 238);
 }
