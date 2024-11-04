@@ -66,6 +66,10 @@ select {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+ul div {
+    text-align: center;
+}
+
 @media (min-width: 768px) {
     .profileStatsBox {
       grid-template-columns: repeat(2, 1fr); /* 2x2 layout on medium screens */
