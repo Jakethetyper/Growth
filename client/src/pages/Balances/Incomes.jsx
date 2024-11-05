@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import "./Incomes.css";
 
 const HOW_OFTEN_OPTIONS = [
-  { name: "Daily", value: 365 },
-  { name: "Weekly", value: 52 },
-  { name: "Monthly", value: 12 },
+  { name: "Daily", value: 1 },
+  { name: "Weekly", value: 7 },
+  { name: "Monthly", value: 30.4 },
+  { name: "Yearly", value: 365 },
   { name: "One Time Payment", value: 1 },
 ];
 
@@ -58,15 +59,16 @@ const Incomes = ({ userEmail, userFinancials, setUserFinancials }) => {
         );
       }
 
+      const newCost = income.amount / howOften;
+
       setUserFinancials((prevFinancials) => ({
         ...prevFinancials,
         incomes: [
           ...prevFinancials.incomes,
           {
             name: income.name,
-            amount: income.amount,
+            amount: newCost,
             date: currentDateTime,
-            occurence: howOften,
           },
         ],
       }));

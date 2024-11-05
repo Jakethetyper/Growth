@@ -66,9 +66,11 @@ select {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-ul div {
-    text-align: center;
+.financialsBlockContainer {
+    min-height: 40vh;
+    overflow: auto;
 }
+
 
 @media (min-width: 768px) {
     .profileStatsBox {
@@ -81,6 +83,7 @@ ul div {
       grid-template-columns: repeat(4, 1fr); /* 1x4 layout on larger screens */
     }
   }
+
 
 .Box {
     display: flex;
@@ -107,4 +110,12 @@ ul div {
     align-items: center;
     width: 100%;
     border-bottom: 2px solid rgb(49, 49, 49);
+}
+
+.financialTotal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-top: 2px solid rgb(49, 49, 49);
 }

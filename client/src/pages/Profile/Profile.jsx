@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Profile.css";
 
+const outlookOptions = [
+  { name: "6 Months", value: "6" },
+  { name: "1 Year", value: "12" },
+  { name: "2 Years", value: "24" },
+  { name: "5 Years", value: "60" },
+  { name: "10 Years", value: "120" },
+  { name: "20 Years", value: "240" },
+];
+
+const PAY_PERIOD = [
+  { name: "Daily", value: 1 },
+  { name: "Weekly", value: 7 },
+  { name: "Biweekly", value: 14 },
+  { name: "Monthly", value: 30.4 },
+  { name: "Yearly", value: 365 },
+];
+
 const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
-  const outlookOptions = [
-    { name: "6 Months", value: "6" },
-    { name: "1 Year", value: "12" },
-    { name: "2 Years", value: "24" },
-    { name: "5 Years", value: "60" },
-    { name: "10 Years", value: "120" },
-    { name: "20 Years", value: "240" },
-  ];
+  const [payPeriod, setPayPeriod] = useState(1);
+
+  const handlePayChange = (event) => {
+    setPayPeriod(event.target.value);
+  };
+
   return (
     <div className="profileContainer">
       <h1>{userEmail}'s Page</h1>
@@ -25,9 +40,9 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
           </select>
         </div>
         <div>
-          <label>Period:</label>
-          <select>
-            {outlookOptions.map((option, index) => (
+          <label>Pay Period:</label>
+          <select onChange={handlePayChange}>
+            {PAY_PERIOD.map((option, index) => (
               <option value={option.value} key={index}>
                 {option.name}
               </option>
@@ -49,11 +64,11 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 </div>
                 <div>Amount</div>
               </div>
-              <ul className="financialsBlock">
+              <ul className="financialsBlockContainer">
                 {userFinancials.incomes.map((income, index) => (
                   <li key={index} className="financialBlock">
                     <div>{income.name}</div>
-                    <div>${income.amount}</div>
+                    <div>${(income.amount * payPeriod).toFixed(2)}</div>
                   </li>
                 ))}
               </ul>
@@ -72,17 +87,22 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 </div>
                 <div>Amount</div>
               </div>
-              <ul>
+              <ul className="financialsBlockContainer">
                 {userFinancials.expenses.map((expense, index) => (
                   <li key={index} className="financialBlock">
                     <div>{expense.name}</div>
-                    <div>${expense.amount}</div>
+                    <div>-${(expense.amount * payPeriod).toFixed(2)}</div>
                   </li>
                 ))}
               </ul>
+              <div className="financialTotal">
+                <div>
+                  <strong>Total:</strong>
+                </div>
+              </div>
             </>
           ) : (
-            <div>No Investments Recorded</div>
+            <div>No Expenses Recorded</div>
           )}
         </div>
         <div className="Box">
@@ -95,7 +115,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 </div>
                 <div>Amount</div>
               </div>
-              <ul>
+              <ul className="financialsBlockContainer">
                 {userFinancials.investments.map((investment, index) => (
                   <li key={index} className="financialBlock">
                     <div>{investment.name}</div>
@@ -103,6 +123,11 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                   </li>
                 ))}
               </ul>
+              <div className="financialTotal">
+                <div>
+                  <strong>Total:</strong>
+                </div>
+              </div>
             </>
           ) : (
             <div>No Investments Recorded</div>

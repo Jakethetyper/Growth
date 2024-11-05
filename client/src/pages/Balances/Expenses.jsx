@@ -3,9 +3,10 @@ import "./Expenses.css";
 
 // Constants for how often options and default categories
 const HOW_OFTEN_OPTIONS = [
-  { name: "Daily", value: 365 },
-  { name: "Weekly", value: 52 },
-  { name: "Monthly", value: 12 },
+  { name: "Daily", value: 1 },
+  { name: "Weekly", value: 7 },
+  { name: "Monthly", value: 30.4 },
+  { name: "Yearly", value: 365 },
   { name: "One Time Payment", value: 1 },
 ];
 
@@ -113,15 +114,16 @@ const Expenses = ({ userEmail, userFinancials, setUserFinancials }) => {
         throw new Error(errorData.error || "Request failed");
       }
 
+      const newCost = expense.amount / howOften;
+
       setUserFinancials((prevFinancials) => ({
         ...prevFinancials,
         expenses: [
           ...prevFinancials.expenses,
           {
             name: expense.name,
-            amount: expense.amount,
+            amount: newCost,
             date: currentDateTime,
-            occurence: howOften,
           },
         ],
       }));

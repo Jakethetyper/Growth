@@ -7,7 +7,6 @@ const FinancialsSchema = new mongoose.Schema({
       name: { type: String, required: true },
       amount: { type: Number, required: true },
       date: { type: String, required: true },
-      occurence: { type: Number, required: true },
     },
   ],
   investments: [
@@ -15,7 +14,6 @@ const FinancialsSchema = new mongoose.Schema({
       name: { type: String, required: true },
       amount: { type: Number, required: true },
       date: { type: String, required: true },
-      occurence: { type: Number, required: true },
     },
   ],
   incomes: [
