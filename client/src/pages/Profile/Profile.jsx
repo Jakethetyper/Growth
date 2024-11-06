@@ -20,6 +20,7 @@ const PAY_PERIOD = [
 
 const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [payPeriod, setPayPeriod] = useState(1);
+  const [outlook, setOutlook] = useState("");
   const [totals, setTotals] = useState({
     incomesTotal: 0,
     expensesTotal: 0,
@@ -85,7 +86,26 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
           <h2>Growth</h2>
           <div className="growthBlockContainer">
             <div className="growthBlock">
-              <div>Net Profit:</div>
+              <div>
+                <strong>Net Profit:</strong>
+              </div>
+              <div>${(net * payPeriod).toFixed(2)}</div>
+            </div>
+          </div>
+          <h2>Theoretical Gains</h2>
+          <div className="growthBlockContainer">
+            <div className="growthBlock">
+              <div>
+                <strong>Expected Interest:</strong>
+              </div>
+              <div className="interestContainer">
+                <input className="interestBlock" type="number" />%
+              </div>
+            </div>
+            <div className="growthBlock">
+              <div>
+                <strong>Net Profit:</strong>
+              </div>
               <div>${(net * payPeriod).toFixed(2)}</div>
             </div>
           </div>

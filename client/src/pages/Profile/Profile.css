@@ -32,7 +32,13 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 1vh;
 }
+
+.interestContainer {
+    max-width: 20%;
+}
+
 
 .financialChoiceBlock {
     width: 100%;
