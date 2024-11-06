@@ -1,4 +1,3 @@
-// src/pages/Articles/SavingTips.jsx
 
 import React from "react";
 import "./Article.css";
@@ -14,7 +13,6 @@ const SavingTips = () => {
         <li>Set specific, achievable savings goals.</li>
         <li>Take advantage of cash-back programs.</li>
         <li>Review and adjust your budget regularly.</li>
-        {/* Add more tips as needed */}
       </ul>
     </div>
   );

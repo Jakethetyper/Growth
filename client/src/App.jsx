@@ -14,6 +14,9 @@ import Library from "./pages/Library/Library";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
+import BudgetCalculator from "./pages/Tools/BudgetCalculator";
+import InvestmentTracker from "./pages/Tools/InvestmentTracker";
+import LoanRepaymentCalculator from "./pages/Tools/LoanRepaymentCalculator";
 import BudgetingBasics from "./pages/Library/BudgetingBasics";
 import SavingTips from "./pages/Articles/SavingTips";
 import DebtReduction from "./pages/Articles/DebtReduction";
@@ -60,6 +63,36 @@ function AppRoutes({
             }
           />
           <Route
+            path="/tools/budget-calculator"
+            element={
+              isAuthenticated ? (
+                <BudgetCalculator />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/tools/investment-tracker"
+            element={
+              isAuthenticated ? (
+                <InvestmentTracker />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/tools/loan-calculator"
+            element={
+              isAuthenticated ? (
+                <LoanRepaymentCalculator />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
             path="/articles/budgeting-basics"
             element={
               isAuthenticated ? (
@@ -100,15 +133,15 @@ function AppRoutes({
             }
           />
           <Route
-          path="/articles/savings-goals"
-          element={
-            isAuthenticated ? (
-              <SavingsGoals />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+            path="/articles/savings-goals"
+            element={
+              isAuthenticated ? (
+                <SavingsGoals />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
           <Route
             path="/profile"
             element={

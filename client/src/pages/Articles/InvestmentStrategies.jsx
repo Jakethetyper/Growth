@@ -1,4 +1,3 @@
-// src/pages/Articles/InvestmentStrategies.jsx
 
 import React from "react";
 import "./Article.css";

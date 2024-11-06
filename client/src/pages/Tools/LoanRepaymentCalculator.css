@@ -1,0 +1,46 @@
+/* src/pages/Tools/LoanRepaymentCalculator.css */
+
+.loan-repayment-calculator-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #eaf4fc;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loan-repayment-calculator-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .loan-repayment-calculator-container input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .loan-repayment-calculator-container button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .loan-repayment-calculator-container button:hover {
+    background-color: #138496;
+  }
+  
+  .loan-repayment-calculator-container p {
+    margin-top: 15px;
+    font-size: 1.1em;
+  }
+  

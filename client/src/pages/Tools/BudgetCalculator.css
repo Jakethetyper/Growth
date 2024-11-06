@@ -1,0 +1,45 @@
+/* src/pages/Tools/BudgetCalculator.css */
+
+.budget-calculator-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .budget-calculator-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .budget-calculator-container input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .budget-calculator-container button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .budget-calculator-container button:hover {
+    background-color: #218838;
+  }
+  
+  .budget-calculator-container p {
+    margin-top: 15px;
+  }
+  

@@ -1,8 +1,6 @@
-// src/pages/Articles/DebtReduction.jsx
 
 import React from "react";
-import "./Article.css"; // Ensure this file exists
-
+import "./Article.css";
 const DebtReduction = () => {
   return (
     <div className="article-container">
