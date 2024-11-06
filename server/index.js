@@ -89,7 +89,6 @@ app.post("/api/addExpense", async (req, res) => {
   try {
     const { email, name, cost, date, occurence, type } = req.body;
     const newCost = cost / occurence;
-    console.log(newCost);
 
     const expense = {
       name: name,
