@@ -45,6 +45,9 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
       0
     );
 
+    const netTotal = incomeTotal + investmentTotal - expenseTotal;
+    setNet(netTotal);
+
     setTotals({
       incomesTotal: incomeTotal,
       expensesTotal: expenseTotal,
@@ -83,7 +86,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
           <div className="growthBlockContainer">
             <div className="growthBlock">
               <div>Net Profit:</div>
-              <div>${net}</div>
+              <div>${(net * payPeriod).toFixed(2)}</div>
             </div>
           </div>
         </div>
