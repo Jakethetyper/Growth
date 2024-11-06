@@ -30,6 +30,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [theoreticals, setTheoreticals] = useState({
     interest: 0,
     investmentAmount: 0,
+    investmentPeriod: 100,
   });
 
   const handlePayChange = (event) => {
@@ -53,6 +54,11 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
     const netTotal = incomeTotal + investmentTotal - expenseTotal;
     setNet(netTotal);
 
+    setTheoreticals((prevState) => ({
+      ...prevState,
+      investmentPeriod: netTotal,
+    }));
+
     setTotals({
       incomesTotal: incomeTotal,
       expensesTotal: expenseTotal,
@@ -70,6 +76,14 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
       (option) => option.value === event.target.value
     );
     setOutlook(selectedOption ? selectedOption.name : "6 Months");
+  };
+
+  const handleInvestmentPeriodChange = (event) => {
+    console.log(event.target.value);
+    setTheoreticals((prevState) => ({
+      ...prevState,
+      investmentPeriod: event.target.value,
+    }));
   };
 
   return (
@@ -115,7 +129,16 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 <strong>Investment Period:</strong>
               </div>
               <div>
-                <strong>{outlook}</strong>
+                <select
+                  className="selectInvest"
+                  onChange={handleInvestmentPeriodChange}
+                >
+                  {PAY_PERIOD.map((option, index) => (
+                    <option value={option.value} key={index}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="growthBlock">
@@ -127,6 +150,8 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 <input
                   className="interestBlock"
                   type="number"
+                  min={0}
+                  max={net * theoreticals.investmentPeriod}
                   name="investmentAmount" // Add name attribute
                   value={theoreticals.investmentAmount}
                   onChange={handleInputChange}

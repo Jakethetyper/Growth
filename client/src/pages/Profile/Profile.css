@@ -35,6 +35,16 @@ h2 {
     margin-bottom: 1vh;
 }
 
+.selectInvest {
+    background-color: var(--text-color);
+    color: var(--icon-color);
+}
+
+.selectInvest:hover {
+    background-color: var(--text-color);
+    color: var(--icon-color);
+}
+
 .interestContainer {
     max-width: 15%;
     display: flex;
