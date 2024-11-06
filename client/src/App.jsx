@@ -15,8 +15,10 @@ import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
 import BudgetingBasics from "./pages/Library/BudgetingBasics";
-import SavingTips from "./pages/Articles/SavingTips"; // Import article pages
-import DebtReduction from "./pages/Articles/DebtReduction"; // Import article pages
+import SavingTips from "./pages/Articles/SavingTips";
+import DebtReduction from "./pages/Articles/DebtReduction";
+import InvestmentStrategies from "./pages/Articles/InvestmentStrategies";
+import SavingsGoals from "./pages/Articles/SavingsGoals";
 
 function AppRoutes({
   isAuthenticated,
@@ -88,6 +90,26 @@ function AppRoutes({
             }
           />
           <Route
+            path="/articles/investment-strategies"
+            element={
+              isAuthenticated ? (
+                <InvestmentStrategies />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+          path="/articles/savings-goals"
+          element={
+            isAuthenticated ? (
+              <SavingsGoals />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+          <Route
             path="/profile"
             element={
               isAuthenticated ? (
@@ -143,12 +165,11 @@ function AppRoutes({
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // Loading state for auth check
-  const [financialsLoading, setFinancialsLoading] = useState(true); // Loading state for financial data
+  const [loading, setLoading] = useState(true);
+  const [financialsLoading, setFinancialsLoading] = useState(true);
   const [userEmail, setUserEmail] = useState(null);
   const [userFinancials, setUserFinancials] = useState();
 
-  // Check authentication and fetch financial data
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
@@ -173,7 +194,7 @@ function App() {
         console.error(err);
         setIsAuthenticated(false);
       } finally {
-        setLoading(false); // Stop loading when auth check is complete
+        setLoading(false);
       }
     };
 
@@ -207,21 +228,19 @@ function App() {
       } catch (error) {
         console.error("Error fetching financial data:", error);
       } finally {
-        setFinancialsLoading(false); // Stop loading after fetching financial data
+        setFinancialsLoading(false);
       }
     };
 
-    // First check auth status, then fetch financial data if authenticated
     checkAuthStatus().then(() => {
       if (userEmail) {
         fetchFinancialData();
       } else {
-        setFinancialsLoading(false); // Skip fetching if not authenticated
+        setFinancialsLoading(false);
       }
     });
   }, [userEmail]);
 
-  // Render loading indicator until both auth and financial data are loaded
   if (loading || financialsLoading) {
     return <div>Loading...</div>;
   }
