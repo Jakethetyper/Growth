@@ -36,7 +36,19 @@ h2 {
 }
 
 .interestContainer {
-    max-width: 20%;
+    max-width: 15%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.interestBlock {
+    max-width: 100%;
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-right: 3px;
 }
 
 

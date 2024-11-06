@@ -20,13 +20,17 @@ const PAY_PERIOD = [
 
 const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [payPeriod, setPayPeriod] = useState(1);
-  const [outlook, setOutlook] = useState("");
+  const [outlook, setOutlook] = useState("6 Months");
   const [totals, setTotals] = useState({
     incomesTotal: 0,
     expensesTotal: 0,
     investmentsTotal: 0,
   });
   const [net, setNet] = useState(0);
+  const [theoreticals, setTheoreticals] = useState({
+    interest: 0,
+    investmentAmount: 0,
+  });
 
   const handlePayChange = (event) => {
     setPayPeriod(event.target.value);
@@ -56,13 +60,28 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
     });
   }, [userFinancials]);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setTheoreticals({ ...theoreticals, [name]: value });
+  };
+
+  const handleOutlookChange = (event) => {
+    // Find the selected option based on the value
+    const selectedOption = outlookOptions.find(
+      (option) => option.value === event.target.value
+    );
+
+    // Set outlook to the name of the selected option
+    setOutlook(selectedOption.name);
+  };
+
   return (
     <div className="profileContainer">
       <h1>{userEmail}'s Page</h1>
       <div className="financialChoiceBlock">
         <div>
           <label>Outlook:</label>
-          <select>
+          <select onChange={handleOutlookChange}>
             {outlookOptions.map((option, index) => (
               <option value={option.value} key={index}>
                 {option.name}
@@ -96,17 +115,33 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
           <div className="growthBlockContainer">
             <div className="growthBlock">
               <div>
-                <strong>Expected Interest:</strong>
+                <strong>Investment Period:</strong>
               </div>
-              <div className="interestContainer">
-                <input className="interestBlock" type="number" />%
+              <div>
+                <strong>{outlook}</strong>
               </div>
             </div>
             <div className="growthBlock">
               <div>
-                <strong>Net Profit:</strong>
+                <strong>Investment Period:</strong>
               </div>
-              <div>${(net * payPeriod).toFixed(2)}</div>
+              <div>
+                <strong>{outlook}</strong>
+              </div>
+            </div>
+            <div className="growthBlock">
+              <div>
+                <strong>Expected {outlook} Interest:</strong>
+              </div>
+              <div className="interestContainer">
+                <input
+                  className="interestBlock"
+                  type="number"
+                  value={theoreticals.interest}
+                  onChange={handleInputChange}
+                />{" "}
+                %
+              </div>
             </div>
           </div>
         </div>

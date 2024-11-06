@@ -33,7 +33,7 @@
     margin-bottom: 5px;
   }
   
-  .form-group input,
+  .form-group input [type="text"],
   .form-group select {
     width: 100%;
     padding: 10px;
