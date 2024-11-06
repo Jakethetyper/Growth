@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
 
 const outlookOptions = [
@@ -20,10 +20,37 @@ const PAY_PERIOD = [
 
 const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [payPeriod, setPayPeriod] = useState(1);
+  const [totals, setTotals] = useState({
+    incomesTotal: 0,
+    expensesTotal: 0,
+    investmentsTotal: 0,
+  });
+  const [net, setNet] = useState(0);
 
   const handlePayChange = (event) => {
     setPayPeriod(event.target.value);
   };
+
+  useEffect(() => {
+    const expenseTotal = userFinancials.expenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
+    const incomeTotal = userFinancials.incomes.reduce(
+      (sum, income) => sum + income.amount,
+      0
+    );
+    const investmentTotal = userFinancials.investments.reduce(
+      (sum, investment) => sum + investment.amount,
+      0
+    );
+
+    setTotals({
+      incomesTotal: incomeTotal,
+      expensesTotal: expenseTotal,
+      investmentsTotal: investmentTotal,
+    });
+  }, [userFinancials]);
 
   return (
     <div className="profileContainer">
@@ -53,6 +80,12 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
       <div className="profileStatsBox">
         <div className="Box">
           <h2>Growth</h2>
+          <div className="growthBlockContainer">
+            <div className="growthBlock">
+              <div>Net Profit:</div>
+              <div>${net}</div>
+            </div>
+          </div>
         </div>
         <div className="Box">
           <h2>Incomes</h2>
@@ -72,6 +105,12 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                   </li>
                 ))}
               </ul>
+              <div className="financialTotal">
+                <div>
+                  <strong>Total:</strong>
+                </div>
+                <div>${(totals.incomesTotal * payPeriod).toFixed(2)}</div>
+              </div>
             </>
           ) : (
             <div>No Investments Recorded</div>
@@ -99,6 +138,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 <div>
                   <strong>Total:</strong>
                 </div>
+                <div>-${(totals.expensesTotal * payPeriod).toFixed(2)}</div>
               </div>
             </>
           ) : (
@@ -127,6 +167,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 <div>
                   <strong>Total:</strong>
                 </div>
+                <div>${(totals.investmentsTotal * payPeriod).toFixed(2)}</div>
               </div>
             </>
           ) : (

@@ -16,6 +16,24 @@ h2 {
     justify-content: center;
 }
 
+.growthBlockContainer {
+    width: 100%;
+    padding: 0vh 1vw;
+}
+
+.growthBlock {
+    color: var(--text-color, #007BFF);
+    width: 100%;
+    padding: 0px 1vw;
+    border-radius: 10px;
+    background-color: var(--background-color, #007BFF);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .financialChoiceBlock {
     width: 100%;
     display: flex;
