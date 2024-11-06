@@ -1,0 +1,57 @@
+.library-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .library-container h1,
+  .library-container h2 {
+    margin-bottom: 15px;
+  }
+  
+  .library-resources,
+  .library-tools,
+  .testimonials,
+  .featured-articles {
+    margin-bottom: 30px;
+  }
+  
+  .library-resources ul,
+  .library-tools ul,
+  .featured-articles ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .library-resources li,
+  .library-tools li,
+  .featured-articles li {
+    margin-bottom: 10px;
+  }
+  
+  .library-resources a,
+  .library-tools a,
+  .featured-articles a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .library-resources p,
+  .library-tools p,
+  .featured-articles p {
+    margin: 5px 0 15px 20px;
+  }
+  
+  .testimonials blockquote {
+    border-left: 4px solid #007bff;
+    padding-left: 15px;
+    margin: 15px 0;
+    font-style: italic;
+  }
+  
+  .testimonials footer {
+    text-align: right;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  

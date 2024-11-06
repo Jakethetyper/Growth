@@ -14,7 +14,9 @@ import Library from "./pages/Library/Library";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
-import Investments from "./pages/Balances/Investments";
+import BudgetingBasics from "./pages/Library/BudgetingBasics";
+import SavingTips from "./pages/Articles/SavingTips"; // Import article pages
+import DebtReduction from "./pages/Articles/DebtReduction"; // Import article pages
 
 function AppRoutes({
   isAuthenticated,
@@ -50,6 +52,36 @@ function AppRoutes({
             element={
               isAuthenticated ? (
                 <Library userEmail={userEmail} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/articles/budgeting-basics"
+            element={
+              isAuthenticated ? (
+                <BudgetingBasics />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/articles/saving-tips"
+            element={
+              isAuthenticated ? (
+                <SavingTips />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/articles/debt-reduction"
+            element={
+              isAuthenticated ? (
+                <DebtReduction />
               ) : (
                 <Navigate to="/login" />
               )
