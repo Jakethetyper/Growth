@@ -14,14 +14,16 @@ import Library from "./pages/Library/Library";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
-import BudgetCalculator from "./pages/Tools/BudgetCalculator"; // Import Budget Calculator component
-import Investments from "./pages/Balances/Investments"; // Import the Investments component
-import LoanRepaymentCalculator from "./pages/Tools/LoanRepaymentCalculator"; // Import Loan Repayment Calculator component
+import BudgetCalculator from "./pages/Tools/BudgetCalculator";
+import Investments from "./pages/Balances/Investments"; // Ensure this path matches your file structure
+import LoanRepaymentCalculator from "./pages/Tools/LoanRepaymentCalculator";
 import BudgetingBasics from "./pages/Library/BudgetingBasics";
 import SavingTips from "./pages/Articles/SavingTips";
 import DebtReduction from "./pages/Articles/DebtReduction";
 import InvestmentStrategies from "./pages/Articles/InvestmentStrategies";
-import SavingsGoals from "./pages/Articles/SavingsGoals"; // Import SavingsGoals component
+import SavingsGoals from "./pages/Articles/SavingsGoals";
+import EarlyRetirement from "./pages/Articles/EarlyRetirement";
+import BuildingEmergencyFund from "./pages/Articles/BuildingEmergencyFund";
 
 function AppRoutes({
   isAuthenticated,
@@ -91,6 +93,26 @@ function AppRoutes({
             element={
               isAuthenticated ? (
                 <LoanRepaymentCalculator />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/articles/early-retirement"
+            element={
+              isAuthenticated ? (
+                <EarlyRetirement />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/articles/building-an-emergency-fund"
+            element={
+              isAuthenticated ? (
+                <BuildingEmergencyFund />
               ) : (
                 <Navigate to="/login" />
               )
