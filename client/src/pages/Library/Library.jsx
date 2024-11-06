@@ -1,6 +1,7 @@
 // src/pages/Library/Library.jsx
 
 import React from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWallet,
@@ -19,21 +20,21 @@ const Library = () => {
         <h2>Financial Resources</h2>
         <ul>
           <li>
-            <a href="/articles/budgeting-basics">
+            <Link to="/articles/budgeting-basics">
               <FontAwesomeIcon icon={faWallet} /> Budgeting Basics
-            </a>
+            </Link>
             <p>Learn how to create and stick to a budget effectively.</p>
           </li>
           <li>
-            <a href="/articles/investment-strategies">
+            <Link to="/articles/investment-strategies">
               <FontAwesomeIcon icon={faChartLine} /> Investment Strategies
-            </a>
+            </Link>
             <p>Explore strategies to grow your wealth through smart investments.</p>
           </li>
           <li>
-            <a href="/articles/savings-goals">
+            <Link to="/articles/savings-goals">
               <FontAwesomeIcon icon={faPiggyBank} /> Savings Goals
-            </a>
+            </Link>
             <p>Set and achieve your financial goals with practical tips.</p>
           </li>
         </ul>
@@ -44,15 +45,15 @@ const Library = () => {
         <h2>Interactive Tools</h2>
         <ul>
           <li>
-            <a href="/tools/budget-calculator">Budget Calculator</a>
+            <Link to="/tools/budget-calculator">Budget Calculator</Link>
             <p>Plan your budget and keep track of your spending.</p>
           </li>
           <li>
-            <a href="/tools/investment-tracker">Investment Tracker</a>
+            <Link to="/balances/investments">Investment Tracker</Link>
             <p>Monitor your portfolio's growth and returns.</p>
           </li>
           <li>
-            <a href="/tools/loan-calculator">Loan Repayment Calculator</a>
+            <Link to="/tools/loan-repayment-calculator">Loan Repayment Calculator</Link>
             <p>Calculate monthly repayments for your loans.</p>
           </li>
         </ul>
@@ -63,11 +64,11 @@ const Library = () => {
         <h2>Featured Articles</h2>
         <ul>
           <li>
-            <a href="/articles/early-retirement">Early Retirement: Is It Possible?</a>
+            <Link to="/articles/early-retirement">Early Retirement: Is It Possible?</Link>
             <p>Discover how you can plan for early retirement effectively.</p>
           </li>
           <li>
-            <a href="/articles/building-an-emergency-fund">Building an Emergency Fund</a>
+            <Link to="/articles/building-an-emergency-fund">Building an Emergency Fund</Link>
             <p>Secure your finances by preparing for unexpected expenses.</p>
           </li>
         </ul>

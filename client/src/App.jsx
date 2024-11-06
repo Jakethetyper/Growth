@@ -14,14 +14,14 @@ import Library from "./pages/Library/Library";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
-import BudgetCalculator from "./pages/Tools/BudgetCalculator";
-import InvestmentTracker from "./pages/Tools/InvestmentTracker";
-import LoanRepaymentCalculator from "./pages/Tools/LoanRepaymentCalculator";
+import BudgetCalculator from "./pages/Tools/BudgetCalculator"; // Import Budget Calculator component
+import Investments from "./pages/Balances/Investments"; // Import the Investments component
+import LoanRepaymentCalculator from "./pages/Tools/LoanRepaymentCalculator"; // Import Loan Repayment Calculator component
 import BudgetingBasics from "./pages/Library/BudgetingBasics";
 import SavingTips from "./pages/Articles/SavingTips";
 import DebtReduction from "./pages/Articles/DebtReduction";
 import InvestmentStrategies from "./pages/Articles/InvestmentStrategies";
-import SavingsGoals from "./pages/Articles/SavingsGoals";
+import SavingsGoals from "./pages/Articles/SavingsGoals"; // Import SavingsGoals component
 
 function AppRoutes({
   isAuthenticated,
@@ -63,6 +63,20 @@ function AppRoutes({
             }
           />
           <Route
+            path="/balances/investments"
+            element={
+              isAuthenticated ? (
+                <Investments
+                  userEmail={userEmail}
+                  userFinancials={userFinancials}
+                  setUserFinancials={setUserFinancials}
+                />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
             path="/tools/budget-calculator"
             element={
               isAuthenticated ? (
@@ -73,17 +87,7 @@ function AppRoutes({
             }
           />
           <Route
-            path="/tools/investment-tracker"
-            element={
-              isAuthenticated ? (
-                <InvestmentTracker />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="/tools/loan-calculator"
+            path="/tools/loan-repayment-calculator"
             element={
               isAuthenticated ? (
                 <LoanRepaymentCalculator />
