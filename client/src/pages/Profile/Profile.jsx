@@ -33,7 +33,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   });
 
   const handlePayChange = (event) => {
-    setPayPeriod(event.target.value);
+    setPayPeriod(Number(event.target.value));
   };
 
   useEffect(() => {
@@ -66,13 +66,10 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   };
 
   const handleOutlookChange = (event) => {
-    // Find the selected option based on the value
     const selectedOption = outlookOptions.find(
       (option) => option.value === event.target.value
     );
-
-    // Set outlook to the name of the selected option
-    setOutlook(selectedOption.name);
+    setOutlook(selectedOption ? selectedOption.name : "6 Months");
   };
 
   return (
@@ -123,10 +120,17 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
             </div>
             <div className="growthBlock">
               <div>
-                <strong>Investment Period:</strong>
+                <strong>Investment Amount:</strong>
               </div>
-              <div>
-                <strong>{outlook}</strong>
+              <div className="interestContainer">
+                $
+                <input
+                  className="interestBlock"
+                  type="number"
+                  name="investmentAmount" // Add name attribute
+                  value={theoreticals.investmentAmount}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
             <div className="growthBlock">
@@ -137,9 +141,10 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 <input
                   className="interestBlock"
                   type="number"
+                  name="interest" // Add name attribute
                   value={theoreticals.interest}
                   onChange={handleInputChange}
-                />{" "}
+                />
                 %
               </div>
             </div>
