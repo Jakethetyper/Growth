@@ -38,6 +38,8 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   };
 
   useEffect(() => {
+    if (!userFinancials) return; // Exit if userFinancials is not loaded
+
     const expenseTotal = userFinancials.expenses.reduce(
       (sum, expense) => sum + expense.amount,
       0
@@ -111,158 +113,160 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
           </select>
         </div>
       </div>
-      <div className="profileStatsBox">
-        <div className="Box">
-          <h2>Growth</h2>
-          <div className="growthBlockContainer">
-            <div className="growthBlock">
-              <div>
-                <strong>Net Profit:</strong>
+      {userFinancials ? (
+        <div className="profileStatsBox">
+          <div className="Box">
+            <h2>Growth</h2>
+            <div className="growthBlockContainer">
+              <div className="growthBlock">
+                <div>
+                  <strong>Net Profit:</strong>
+                </div>
+                <div>${(net * payPeriod).toFixed(2)}</div>
               </div>
-              <div>${(net * payPeriod).toFixed(2)}</div>
+            </div>
+            <h2>Theoretical Gains</h2>
+            <div className="growthBlockContainer">
+              <div className="growthBlock">
+                <div>
+                  <strong>Investment Period:</strong>
+                </div>
+                <div>
+                  <select
+                    className="selectInvest"
+                    onChange={handleInvestmentPeriodChange}
+                  >
+                    {PAY_PERIOD.map((option, index) => (
+                      <option value={option.value} key={index}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="growthBlock">
+                <div>
+                  <strong>Investment Amount:</strong>
+                </div>
+                <div className="interestContainer">
+                  $
+                  <input
+                    className="interestBlock"
+                    type="number"
+                    min={0}
+                    max={net * theoreticals.investmentPeriod}
+                    name="investmentAmount" // Add name attribute
+                    value={theoreticals.investmentAmount}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="growthBlock">
+                <div>
+                  <strong>Expected Yearly Interest:</strong>
+                </div>
+                <div className="interestContainer">
+                  <input
+                    className="interestBlock"
+                    type="number"
+                    name="interest" // Add name attribute
+                    value={theoreticals.interest}
+                    onChange={handleInputChange}
+                  />
+                  %
+                </div>
+              </div>
             </div>
           </div>
-          <h2>Theoretical Gains</h2>
-          <div className="growthBlockContainer">
-            <div className="growthBlock">
-              <div>
-                <strong>Investment Period:</strong>
-              </div>
-              <div>
-                <select
-                  className="selectInvest"
-                  onChange={handleInvestmentPeriodChange}
-                >
-                  {PAY_PERIOD.map((option, index) => (
-                    <option value={option.value} key={index}>
-                      {option.name}
-                    </option>
+          <div className="Box">
+            <h2>Incomes</h2>
+            {userFinancials.incomes.length > 0 ? (
+              <>
+                <div className="financialHeader">
+                  <div>
+                    <strong>Income Source:</strong>
+                  </div>
+                  <div>Amount</div>
+                </div>
+                <ul className="financialsBlockContainer">
+                  {userFinancials.incomes.map((income, index) => (
+                    <li key={index} className="financialBlock">
+                      <div>{income.name}</div>
+                      <div>${(income.amount * payPeriod).toFixed(2)}</div>
+                    </li>
                   ))}
-                </select>
-              </div>
-            </div>
-            <div className="growthBlock">
-              <div>
-                <strong>Investment Amount:</strong>
-              </div>
-              <div className="interestContainer">
-                $
-                <input
-                  className="interestBlock"
-                  type="number"
-                  min={0}
-                  max={net * theoreticals.investmentPeriod}
-                  name="investmentAmount" // Add name attribute
-                  value={theoreticals.investmentAmount}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-            <div className="growthBlock">
-              <div>
-                <strong>Expected {outlook} Interest:</strong>
-              </div>
-              <div className="interestContainer">
-                <input
-                  className="interestBlock"
-                  type="number"
-                  name="interest" // Add name attribute
-                  value={theoreticals.interest}
-                  onChange={handleInputChange}
-                />
-                %
-              </div>
-            </div>
+                </ul>
+                <div className="financialTotal">
+                  <div>
+                    <strong>Total:</strong>
+                  </div>
+                  <div>${(totals.incomesTotal * payPeriod).toFixed(2)}</div>
+                </div>
+              </>
+            ) : (
+              <div>No Investments Recorded</div>
+            )}
+          </div>
+          <div className="Box">
+            <h2>Expenses</h2>
+            {userFinancials.expenses.length > 0 ? (
+              <>
+                <div className="financialHeader">
+                  <div>
+                    <strong>Expense:</strong>
+                  </div>
+                  <div>Amount</div>
+                </div>
+                <ul className="financialsBlockContainer">
+                  {userFinancials.expenses.map((expense, index) => (
+                    <li key={index} className="financialBlock">
+                      <div>{expense.name}</div>
+                      <div>-${(expense.amount * payPeriod).toFixed(2)}</div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="financialTotal">
+                  <div>
+                    <strong>Total:</strong>
+                  </div>
+                  <div>-${(totals.expensesTotal * payPeriod).toFixed(2)}</div>
+                </div>
+              </>
+            ) : (
+              <div>No Expenses Recorded</div>
+            )}
+          </div>
+          <div className="Box">
+            <h2>Investments</h2>
+            {userFinancials.investments.length > 0 ? (
+              <>
+                <div className="financialHeader">
+                  <div>
+                    <strong>Investment:</strong>
+                  </div>
+                  <div>Amount</div>
+                </div>
+                <ul className="financialsBlockContainer">
+                  {userFinancials.investments.map((investment, index) => (
+                    <li key={index} className="financialBlock">
+                      <div>{investment.name}</div>
+                      <div>${investment.amount}</div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="financialTotal">
+                  <div>
+                    <strong>Total:</strong>
+                  </div>
+                  <div>${(totals.investmentsTotal * payPeriod).toFixed(2)}</div>
+                </div>
+              </>
+            ) : (
+              <div>No Investments Recorded</div>
+            )}
           </div>
         </div>
-        <div className="Box">
-          <h2>Incomes</h2>
-          {userFinancials.incomes.length > 0 ? (
-            <>
-              <div className="financialHeader">
-                <div>
-                  <strong>Income Source:</strong>
-                </div>
-                <div>Amount</div>
-              </div>
-              <ul className="financialsBlockContainer">
-                {userFinancials.incomes.map((income, index) => (
-                  <li key={index} className="financialBlock">
-                    <div>{income.name}</div>
-                    <div>${(income.amount * payPeriod).toFixed(2)}</div>
-                  </li>
-                ))}
-              </ul>
-              <div className="financialTotal">
-                <div>
-                  <strong>Total:</strong>
-                </div>
-                <div>${(totals.incomesTotal * payPeriod).toFixed(2)}</div>
-              </div>
-            </>
-          ) : (
-            <div>No Investments Recorded</div>
-          )}
-        </div>
-        <div className="Box">
-          <h2>Expenses</h2>
-          {userFinancials.expenses.length > 0 ? (
-            <>
-              <div className="financialHeader">
-                <div>
-                  <strong>Expense:</strong>
-                </div>
-                <div>Amount</div>
-              </div>
-              <ul className="financialsBlockContainer">
-                {userFinancials.expenses.map((expense, index) => (
-                  <li key={index} className="financialBlock">
-                    <div>{expense.name}</div>
-                    <div>-${(expense.amount * payPeriod).toFixed(2)}</div>
-                  </li>
-                ))}
-              </ul>
-              <div className="financialTotal">
-                <div>
-                  <strong>Total:</strong>
-                </div>
-                <div>-${(totals.expensesTotal * payPeriod).toFixed(2)}</div>
-              </div>
-            </>
-          ) : (
-            <div>No Expenses Recorded</div>
-          )}
-        </div>
-        <div className="Box">
-          <h2>Investments</h2>
-          {userFinancials.investments.length > 0 ? (
-            <>
-              <div className="financialHeader">
-                <div>
-                  <strong>Investment:</strong>
-                </div>
-                <div>Amount</div>
-              </div>
-              <ul className="financialsBlockContainer">
-                {userFinancials.investments.map((investment, index) => (
-                  <li key={index} className="financialBlock">
-                    <div>{investment.name}</div>
-                    <div>${investment.amount}</div>
-                  </li>
-                ))}
-              </ul>
-              <div className="financialTotal">
-                <div>
-                  <strong>Total:</strong>
-                </div>
-                <div>${(totals.investmentsTotal * payPeriod).toFixed(2)}</div>
-              </div>
-            </>
-          ) : (
-            <div>No Investments Recorded</div>
-          )}
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };
