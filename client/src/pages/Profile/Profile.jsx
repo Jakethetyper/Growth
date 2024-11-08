@@ -18,6 +18,14 @@ const PAY_PERIOD = [
   { name: "Yearly", value: 365 },
 ];
 
+const PeriodsPerYear = [
+  { name: "Daily", value: 365 },
+  { name: "Weekly", value: 52 },
+  { name: "Biweekly", value: 26 },
+  { name: "Monthly", value: 12 },
+  { name: "Yearly", value: 1 },
+];
+
 const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [payPeriod, setPayPeriod] = useState(1);
   const [outlook, setOutlook] = useState("6 Months");
@@ -32,10 +40,15 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
     investmentAmount: 0,
     investmentPeriod: 100,
   });
+  const [theoreticalGains, setTheoreticalGains] = useState(0);
 
   const handlePayChange = (event) => {
     setPayPeriod(Number(event.target.value));
   };
+
+  useEffect(() => {
+    calculateOutlook();
+  }, [theoreticals, payPeriod, outlook]);
 
   useEffect(() => {
     if (!userFinancials) return; // Exit if userFinancials is not loaded
@@ -74,10 +87,11 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   };
 
   const handleOutlookChange = (event) => {
+    console.log(event.target.value);
     const selectedOption = outlookOptions.find(
       (option) => option.value === event.target.value
     );
-    setOutlook(selectedOption ? selectedOption.name : "6 Months");
+    setOutlook(event.target.value);
   };
 
   const handleInvestmentPeriodChange = (event) => {
@@ -86,6 +100,15 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
       ...prevState,
       investmentPeriod: event.target.value,
     }));
+  };
+
+  const calculateOutlook = () => {
+    const r = theoreticals.interest / theoreticals.investmentPeriod;
+    const n = theoreticals.investmentPeriod * outlook;
+    const outLookReturn =
+      theoreticals.investmentAmount * (Math.pow(1 + r, n) / r) * (1 + r);
+
+    setTheoreticalGains(outLookReturn);
   };
 
   return (
@@ -136,7 +159,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                     className="selectInvest"
                     onChange={handleInvestmentPeriodChange}
                   >
-                    {PAY_PERIOD.map((option, index) => (
+                    {PeriodsPerYear.map((option, index) => (
                       <option value={option.value} key={index}>
                         {option.name}
                       </option>
@@ -176,6 +199,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                   %
                 </div>
               </div>
+              <div>{theoreticalGains}</div>
             </div>
           </div>
           <div className="Box">
