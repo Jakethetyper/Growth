@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./Profile.css";
 
 const outlookOptions = [
-  { name: "6 Months", value: "6" },
-  { name: "1 Year", value: "12" },
-  { name: "2 Years", value: "24" },
-  { name: "5 Years", value: "60" },
-  { name: "10 Years", value: "120" },
-  { name: "20 Years", value: "240" },
+  { name: "6 Months", value: "182" },
+  { name: "1 Year", value: "365" },
+  { name: "2 Years", value: "730" },
+  { name: "5 Years", value: "1825" },
+  { name: "10 Years", value: "3650" },
+  { name: "20 Years", value: "7300" },
 ];
 
 const PAY_PERIOD = [
@@ -18,9 +18,17 @@ const PAY_PERIOD = [
   { name: "Yearly", value: 365 },
 ];
 
+const PeriodsPerYear = [
+  { name: "Daily", value: 365 },
+  { name: "Weekly", value: 52 },
+  { name: "Biweekly", value: 26 },
+  { name: "Monthly", value: 12 },
+  { name: "Yearly", value: 1 },
+];
+
 const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [payPeriod, setPayPeriod] = useState(1);
-  const [outlook, setOutlook] = useState("6 Months");
+  const [outlook, setOutlook] = useState(182);
   const [totals, setTotals] = useState({
     incomesTotal: 0,
     expensesTotal: 0,
@@ -30,12 +38,18 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   const [theoreticals, setTheoreticals] = useState({
     interest: 0,
     investmentAmount: 0,
-    investmentPeriod: 100,
+    investmentPeriod: 365,
+    outlookDividend: 1,
   });
+  const [theoreticalGains, setTheoreticalGains] = useState(0);
 
   const handlePayChange = (event) => {
     setPayPeriod(Number(event.target.value));
   };
+
+  useEffect(() => {
+    calculateOutlook();
+  }, [theoreticals, payPeriod, outlook]);
 
   useEffect(() => {
     if (!userFinancials) return; // Exit if userFinancials is not loaded
@@ -74,18 +88,58 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
   };
 
   const handleOutlookChange = (event) => {
+    console.log(event.target.value);
     const selectedOption = outlookOptions.find(
       (option) => option.value === event.target.value
     );
-    setOutlook(selectedOption ? selectedOption.name : "6 Months");
+    setOutlook(event.target.value);
   };
 
-  const handleInvestmentPeriodChange = (event) => {
-    console.log(event.target.value);
+  const handleInvestmentPeriodChange = (e) => {
+    const value = Number(e.target.value); // Convert to number
+    let test = 0;
+
+    if (value === 365) {
+      test = 1;
+    } else if (value === 52) {
+      test = 7;
+    } else if (value === 26) {
+      test = 14;
+    } else if (value === 12) {
+      test = 30;
+    } else {
+      test = 365;
+    }
+
     setTheoreticals((prevState) => ({
       ...prevState,
-      investmentPeriod: event.target.value,
+      investmentPeriod: value, // Set as number
+      outlookDividend: test,
     }));
+  };
+
+  const calculateOutlook = () => {
+    // Ensure theoreticals.interest is in decimal form
+    const annualInterestRate = Number(theoreticals.interest) / 100;
+
+    // Periodic rate based on the number of investment periods
+    const rate =
+      Math.pow(1 + annualInterestRate, 1 / theoreticals.investmentPeriod) - 1;
+
+    // Number of periods within the specified outlook
+    const investmentsPerPeriod = Math.floor(
+      outlook / theoreticals.outlookDividend
+    );
+    const amount = Number(theoreticals.investmentAmount);
+
+    let futureValue = 0;
+
+    // Calculate compounded future value over investment periods
+    for (let t = 0; t < investmentsPerPeriod; t++) {
+      futureValue += amount * Math.pow(1 + rate, investmentsPerPeriod - t - 1);
+    }
+
+    setTheoreticalGains(futureValue);
   };
 
   return (
@@ -116,7 +170,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
       {userFinancials ? (
         <div className="profileStatsBox">
           <div className="Box">
-            <h2>Growth</h2>
+            <h2 className="headerTwoProfile">Growth</h2>
             <div className="growthBlockContainer">
               <div className="growthBlock">
                 <div>
@@ -125,7 +179,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                 <div>${(net * payPeriod).toFixed(2)}</div>
               </div>
             </div>
-            <h2>Theoretical Gains</h2>
+            <h2 className="headerTwoProfile">Theoretical Gains</h2>
             <div className="growthBlockContainer">
               <div className="growthBlock">
                 <div>
@@ -136,8 +190,12 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                     className="selectInvest"
                     onChange={handleInvestmentPeriodChange}
                   >
-                    {PAY_PERIOD.map((option, index) => (
-                      <option value={option.value} key={index}>
+                    {PeriodsPerYear.map((option, index) => (
+                      <option
+                        value={option.value}
+                        key={index}
+                        name={option.name}
+                      >
                         {option.name}
                       </option>
                     ))}
@@ -176,10 +234,11 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
                   %
                 </div>
               </div>
+              <div>{theoreticalGains}</div>
             </div>
           </div>
           <div className="Box">
-            <h2>Incomes</h2>
+            <h2 className="headerTwoProfile">Incomes</h2>
             {userFinancials.incomes.length > 0 ? (
               <>
                 <div className="financialHeader">
@@ -208,7 +267,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
             )}
           </div>
           <div className="Box">
-            <h2>Expenses</h2>
+            <h2 className="headerTwoProfile">Expenses</h2>
             {userFinancials.expenses.length > 0 ? (
               <>
                 <div className="financialHeader">
@@ -237,7 +296,7 @@ const Profile = ({ userEmail, userFinancials, setUserFinancials }) => {
             )}
           </div>
           <div className="Box">
-            <h2>Investments</h2>
+            <h2 className="headerTwoProfile">Investments</h2>
             {userFinancials.investments.length > 0 ? (
               <>
                 <div className="financialHeader">
